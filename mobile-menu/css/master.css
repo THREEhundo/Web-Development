@@ -1,0 +1,39 @@
+* {
+  box-sizing: content-box;
+}
+
+h2 {
+  font-size: 2.5em;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.menu-container {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.menu-header {
+  flex: 0 0 100%;
+}
+
+.container {
+  display: flex;
+  overflow-y: scroll;
+  flex: 0 0 100%;
+  width: 100%;
+  padding-right: 17px;
+}
+
+.menu-icon {
+  width: 250px;
+  height: 178.328px;
+}
+
+.menu-square {
+  padding-right: 5px;
+}
