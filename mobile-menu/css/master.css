@@ -67,13 +67,14 @@ p {
 .header-img-container {
   width: 100%;
   position: relative;
-  top: 181px;
+  top: 190px;
   left: 620px;
   background-color: transparent;
 }
 
 .header-img {
   width: 100px;
+  background-color: transparent;  
 }
 
 .container {
