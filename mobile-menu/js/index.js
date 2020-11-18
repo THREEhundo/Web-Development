@@ -1,3 +1,4 @@
+let count = 0;
 const nav = document.querySelector("nav");
 const jordan1 = [
   {
@@ -121,15 +122,40 @@ const dunks = [
     color: "dunk truck it"
   }
 ];
+const icons = ["home.png", "mag.png", "user.png", "shopping-bag.png"];
+
+function createSidebar() {
+  const container = document.createElement("div");
+  container.id = "sidebar";
+
+  nav.appendChild(container);
+
+  icons.forEach((icon) => {
+    const img = document.createElement("img");
+    img.classList.add("sidebar-icon");
+    img.src = `./css/img/${icon}`;
+    container.appendChild(img);
+  });
+}
 
 // header / image / blurb
 function createMenu(headerName, arr) {
   const menuContainer = document.createElement("div");
   menuContainer.classList.add("menu-container");
+  menuContainer.id = `menu-${count}`;
+  count += 1;
 
-  const header = document.createElement("h2");
-  header.innerHTML = headerName;
-  header.classList.add("menu-header");
+  const headerImgContainer = document.createElement("div");
+  headerImgContainer.classList.add("header-img-container");
+  const headerImg = document.createElement("img");
+  if (arr === jordan1) {
+    headerImg.src = "./css/img/jordan.png";
+  } else if (arr === yeezy) {
+    headerImg.src = "./css/img/yzy.png";
+  } else {
+    headerImg.src = "./css/img/swoosh.png";
+  }
+  headerImg.classList.add("header-img");
 
   const lowercaseHeader = headerName.toLowerCase();
   const formattedLower = lowercaseHeader.replace(" ", "-");
@@ -139,7 +165,8 @@ function createMenu(headerName, arr) {
   sneakersContainer.classList.add("container");
 
   nav.appendChild(menuContainer);
-  menuContainer.appendChild(header);
+  menuContainer.appendChild(headerImgContainer);
+  headerImgContainer.appendChild(headerImg);
   menuContainer.appendChild(sneakersContainer);
 
   arr.forEach((sneaker) => {
@@ -161,6 +188,7 @@ function createMenu(headerName, arr) {
   });
 }
 
+createSidebar();
 createMenu("Jordan One", jordan1);
 createMenu("Yeezy Boost", yeezy);
 createMenu("Nike Dunk High", dunks);

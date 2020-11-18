@@ -1,12 +1,28 @@
 * {
-  box-sizing: content-box;
+  box-sizing: border-box;
+  margin: 0;
   font-family: "Fira Sans", sans-serif;
   color: white;
-  background-color: #bdb9af;
+  background-color: #334139;
 }
 
 h2 {
   font-size: 2.5em;
+}
+
+nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas:
+    "sidebar jordan jordan jordan"
+    "sidebar yzy yzy yzy"
+    "sidebar nike nike nike";
+}
+
+p {
+  text-align: center;
+  font-size: 2.2em;
 }
 
 ::-webkit-scrollbar {
@@ -14,14 +30,50 @@ h2 {
   background: transparent;
 }
 
+#sidebar {
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  width: 200px;
+  grid-area: sidebar;
+  justify-content: space-around;
+  align-items: center;
+  padding-left: 40px;
+}
+
+#menu-0 {
+  grid-area: jordan;
+}
+
+#menu-1 {
+  grid-area: yzy;
+}
+
+#menu-2 {
+  grid-area: nike;
+}
+
+.sidebar-icon {
+  width: 150px;
+}
+
 .menu-container {
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
+  padding-left: 15px;
 }
 
-.menu-header {
-  flex: 0 0 100%;
+.header-img-container {
+  width: 100%;
+  position: relative;
+  top: 181px;
+  left: 620px;
+  background-color: transparent;
+}
+
+.header-img {
+  width: 100px;
 }
 
 .container {
@@ -29,15 +81,16 @@ h2 {
   overflow-y: scroll;
   flex: 0 0 100%;
   width: 100%;
-  padding-right: 17px;
+  padding-right: 25px;
 }
 
 .menu-icon {
-  width: 250px;
-  height: 178.328px;
-  border-radius: 25px;
+  width: 550px;
+  border-radius: 30px;
 }
 
 .menu-square {
   padding-right: 5px;
+  display: flex;
+  flex-direction: column;
 }
