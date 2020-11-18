@@ -6,10 +6,6 @@ const jordan1 = [
     color: "blue"
   },
   {
-    name: "BRed",
-    color: "bred"
-  },
-  {
     name: "Dark Mocha",
     color: "brown"
   },
@@ -20,10 +16,6 @@ const jordan1 = [
   {
     name: "Clay Green",
     color: "green"
-  },
-  {
-    name: "Shattered",
-    color: "orange"
   },
   {
     name: "CO Japan Neutral",
