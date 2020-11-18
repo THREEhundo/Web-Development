@@ -1,5 +1,8 @@
 * {
   box-sizing: content-box;
+  font-family: "Fira Sans", sans-serif;
+  color: white;
+  background-color: #bdb9af;
 }
 
 h2 {
@@ -32,6 +35,7 @@ h2 {
 .menu-icon {
   width: 250px;
   height: 178.328px;
+  border-radius: 25px;
 }
 
 .menu-square {
