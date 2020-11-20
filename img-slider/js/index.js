@@ -1,64 +1,89 @@
-const carouselContainer = document.querySelector(".carousel-container");
-const imgArr = [1, 2, 3, 4, 5];
+const slideshowContainer = document.querySelector(".slideshow-container");
 
-function showImg(i, dir) {
-  const parent = document.querySelector(".carousel-viewport");
-  const nodeChildren = parent.childNodes;
-  nodeChildren.forEach((child) => {
-    if (dir === "pre") {
-      if (i === 1) {
-        child.style.display = "none";
-        document.querySelector(`#slide-5`).style.display = "list-item";
-      } else {
-        child.style.display = "none";
-        document.querySelector(`#slide-${i - 1}`).style.display = "list-item";
-      }
-    } else if (dir === "nxt") {
-      if (i === 5) {
-        child.style.display = "none";
-        document.querySelector(`#slide-1`).style.display = "list-item";
-      } else {
-        child.style.display = "none";
-        document.querySelector(`#slide-${i + 1}`).style.display = "list-item";
-      }
-    }
-  });
+let slideIndex = 1;
+
+function showSlides(n) {
+  let i;
+  const slides = document.querySelectorAll(".slides");
+  const dots = document.querySelectorAll(".dot");
+  if (n > slides.length) slideIndex = 1;
+  if (n < 1) slideIndex = slides.length;
+  for (i = 0; i < slides.length; i += 1) {
+    slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i += 1) {
+    dots[i].classList.remove("active");
+  }
+  slides[slideIndex - 1].style.display = "block";
+  dots[slideIndex - 1].classList.add("active");
+  if (slideIndex > slides.length) {
+    slideIndex = 1;
+  }
+
+  setTimeout(() => {
+    slideIndex += 1;
+    if (slideIndex > slides.length) slideIndex = 1;
+    showSlides();
+  }, 5000);
 }
 
-function createCarousel() {
-  const ol = document.createElement("ol");
-  ol.classList.add("carousel-viewport");
-  carouselContainer.appendChild(ol);
-
-  imgArr.forEach((i) => {
-    const background = document.createElement("li");
-    background.id = `slide-${i}`;
-    background.classList.add("slide");
-    background.innerHTML = i;
-
-    const snapper = document.createElement("div");
-    snapper.classList.add("snapper");
-
-    const left = document.createElement("img");
-    left.classList.add("previous");
-    left.src = "./css/img/left-arrow.png";
-
-    left.addEventListener("click", () => {
-      showImg(i, "pre");
-    });
-
-    const right = document.createElement("img");
-    right.classList.add("next");
-    right.src = "./css/img/right-arrow.png";
-    right.addEventListener("click", () => {
-      showImg(i, "nxt");
-    });
-
-    ol.appendChild(background);
-    background.appendChild(snapper);
-    snapper.appendChild(left);
-    snapper.appendChild(right);
-  });
+function currentSlide(n) {
+  showSlides((slideIndex = n));
 }
 
-createCarousel();
+function nextSlide(n) {
+  showSlides((slideIndex += n));
+}
+
+function createArrows() {
+  // Left Arrow
+  const prev = document.createElement("a");
+  prev.classList.add("prev");
+  prev.innerHTML = "&#10094";
+  prev.addEventListener("click", () => {
+    nextSlide(-1);
+  });
+
+  // Right Arrow
+  const next = document.createElement("a");
+  next.classList.add("next");
+  next.innerHTML = "&#10095";
+  next.addEventListener("click", () => {
+    nextSlide(1);
+  });
+
+  slideshowContainer.appendChild(prev);
+  slideshowContainer.appendChild(next);
+}
+
+const createSlideshow = () => {
+  const navDotsContainer = document.createElement("div");
+  navDotsContainer.classList.add("nav-container");
+
+  for (let i = 0; i < 4; i += 1) {
+    const slide = document.createElement("div");
+    slide.classList.add("slides", "fade");
+    slide.id = `slide-${i + 1}`;
+    slide.innerHTML = i + 1;
+
+    const background = document.createElement("div");
+    background.classList.add("color");
+    // background.id = `slide-${i + 1}`;
+
+    const dot = document.createElement("span");
+    dot.classList.add("dot");
+    dot.addEventListener("click", () => {
+      currentSlide(i);
+    });
+
+    slideshowContainer.appendChild(slide);
+    slideshowContainer.appendChild(background);
+    navDotsContainer.appendChild(dot);
+  }
+  createArrows();
+
+  slideshowContainer.appendChild(navDotsContainer);
+};
+
+createSlideshow();
+showSlides(slideIndex);
