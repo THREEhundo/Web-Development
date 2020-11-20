@@ -7,14 +7,44 @@
   </head>
   <body>
     <form novalidate>
+      <h2>Mailing List Sign Up</h2>
       <p>
         <label for="mail">
-          <span>Please enter and email address</span>
+          <span>Email Address</span>
           <input type="email" name="mail" id="mail" required minlength="8" />
           <span class="error" aria-live="polite"></span>
         </label>
-        <button>Submit</button>
       </p>
+      <p>
+        <label for="country">
+          <span>Select Country</span>
+          <select name="country" id="country" required></select>
+        </label>
+      </p>
+      <p>
+        <label for="zip">
+          <span>Zip Code</span>
+          <input type="number" name="zip" id="zip" required min="5" />
+        </label>
+      </p>
+      <p>
+        <label for="password">
+          <span>Password:</span>
+          <input type="text" name="password" id="password" required />
+        </label>
+      </p>
+      <p>
+        <label for="password-confirmation">
+          <span>Password Confirmation:</span>
+          <input
+            type="text"
+            name="password-confirmation"
+            id="password-confirmation"
+            required
+          />
+        </label>
+      </p>
+      <button>Submit</button>
     </form>
     <script src="./js/index.js" charset="utf-8"></script>
   </body>
