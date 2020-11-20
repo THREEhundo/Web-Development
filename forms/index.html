@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Forms</title>
+    <link rel="stylesheet" href="./css/main.css" />
+  </head>
+  <body>
+    <form novalidate>
+      <p>
+        <label for="mail">
+          <span>Please enter and email address</span>
+          <input type="email" name="mail" id="mail" required minlength="8" />
+          <span class="error" aria-live="polite"></span>
+        </label>
+        <button>Submit</button>
+      </p>
+    </form>
+    <script src="./js/index.js" charset="utf-8"></script>
+  </body>
+</html>
