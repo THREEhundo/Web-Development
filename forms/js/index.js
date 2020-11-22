@@ -4,6 +4,10 @@ const email = document.querySelector("#mail");
 const emailError = document.querySelector("#mail + span.error");
 
 const selectCountry = document.querySelector("#country");
+const selectCountryError = document.querySelector("#country + span.error");
+
+const zip = document.querySelector("#zip");
+const zipError = document.querySelector("#zip + span.error");
 
 const countries = [
   "Afghanistan",
@@ -202,24 +206,28 @@ const countries = [
   "Zambia",
   "Zimbabwe",
 ];
-
+// Email Reset Error message on correct input
 email.addEventListener("input", function () {
   if (email.validity.valid) {
     emailError.innerHTML = "";
     emailError.className = "error";
   } else {
-    showError();
+    showEmailError();
   }
 });
-
+// Form Validation & error message
 form.addEventListener("submit", function (event) {
   if (!email.validity.valid) {
-    showError();
-    event.preventDefault();
+    showEmailError();
+  } else if (!selectCountry.validity.valid) {
+    showCountryError();
+  } else if (!zip.validity.valid) {
+    showZipError();
   }
+  event.preventDefault();
 });
-
-function showError() {
+// Validation properties for email
+function showEmailError() {
   if (email.validity.valueMissing) {
     emailError.textContent = "Enter an email address";
   } else if (email.validity.typeMismatch) {
@@ -229,7 +237,32 @@ function showError() {
   }
   emailError.className = "error active";
 }
+// Validation Reset Error message on correct input
+selectCountry.addEventListener("input", function (event) {
+  if (selectCountry.validity.valid) {
+    selectCountryError.innerHTML = "";
+    selectCountryError.className = "error";
+  } else {
+    showCountryError();
+    event.preventDefault();
+  }
+});
+// Validation properties for country selection
+function showCountryError() {
+  if (selectCountry.validity.valueMissing) {
+    selectCountryError.textContent = "Select a Country";
+  }
+  selectCountryError.className = "error active";
+}
 
+// Creating options for countries select element
+const placeholder = () => {
+  const option = document.createElement("option");
+  option.innerHTML = "Select a Country";
+  option.value = "";
+  selectCountry.appendChild(option);
+};
+placeholder();
 countries.forEach((country) => {
   const option = document.createElement("option");
   option.innerHTML = country;
@@ -237,3 +270,21 @@ countries.forEach((country) => {
 
   selectCountry.appendChild(option);
 });
+
+zip.addEventListener("input", function () {
+  if (zip.validity.valid) {
+    zipError.innerHTML = "";
+    zipError.className = "error";
+  } else {
+    showZipError();
+  }
+});
+
+function showZipError() {
+  const fiveDigits = "Enter 5 digits";
+  if (zip.validity.patternMismatch) {
+    zipError.textContent = fiveDigits;
+    console.log(`under`);
+  }
+  zipError.className = "error active";
+}

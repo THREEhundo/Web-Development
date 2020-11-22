@@ -19,12 +19,14 @@
         <label for="country">
           <span>Select Country</span>
           <select name="country" id="country" required></select>
+          <span class="error" aria-live="polite"></span>
         </label>
       </p>
       <p>
         <label for="zip">
           <span>Zip Code</span>
-          <input type="number" name="zip" id="zip" required min="5" />
+          <input type="text" name="zip" id="zip" required pattern="[0-9]{5}" />
+          <span class="error" aria-live="polite"></span>
         </label>
       </p>
       <p>
