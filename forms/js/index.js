@@ -9,6 +9,14 @@ const selectCountryError = document.querySelector("#country + span.error");
 const zip = document.querySelector("#zip");
 const zipError = document.querySelector("#zip + span.error");
 
+const password = document.querySelector("#password");
+const passwordError = document.querySelector("#password + span.error");
+
+const passwordConfirmation = document.querySelector("#password-confirmation");
+const passwordConfirmationError = document.querySelector(
+  "#password-confirmation + span.error"
+);
+
 const countries = [
   "Afghanistan",
   "Albania",
@@ -206,6 +214,23 @@ const countries = [
   "Zambia",
   "Zimbabwe",
 ];
+
+// Form Validation & error message
+form.addEventListener("submit", function (event) {
+  if (!email.validity.valid) {
+    showEmailError();
+  } else if (!selectCountry.validity.valid) {
+    showCountryError();
+  } else if (!zip.validity.valid) {
+    showZipError();
+  } else if (!password.validity.valid) {
+    showPasswordError();
+  } else if (!passwordConfirmation.validity.valid) {
+    passwordMismatch();
+  }
+  event.preventDefault();
+});
+
 // Email Reset Error message on correct input
 email.addEventListener("input", function () {
   if (email.validity.valid) {
@@ -215,17 +240,7 @@ email.addEventListener("input", function () {
     showEmailError();
   }
 });
-// Form Validation & error message
-form.addEventListener("submit", function (event) {
-  if (!email.validity.valid) {
-    showEmailError();
-  } else if (!selectCountry.validity.valid) {
-    showCountryError();
-  } else if (!zip.validity.valid) {
-    showZipError();
-  }
-  event.preventDefault();
-});
+
 // Validation properties for email
 function showEmailError() {
   if (email.validity.valueMissing) {
@@ -237,6 +252,7 @@ function showEmailError() {
   }
   emailError.className = "error active";
 }
+
 // Validation Reset Error message on correct input
 selectCountry.addEventListener("input", function (event) {
   if (selectCountry.validity.valid) {
@@ -247,6 +263,7 @@ selectCountry.addEventListener("input", function (event) {
     event.preventDefault();
   }
 });
+
 // Validation properties for country selection
 function showCountryError() {
   if (selectCountry.validity.valueMissing) {
@@ -254,22 +271,6 @@ function showCountryError() {
   }
   selectCountryError.className = "error active";
 }
-
-// Creating options for countries select element
-const placeholder = () => {
-  const option = document.createElement("option");
-  option.innerHTML = "Select a Country";
-  option.value = "";
-  selectCountry.appendChild(option);
-};
-placeholder();
-countries.forEach((country) => {
-  const option = document.createElement("option");
-  option.innerHTML = country;
-  option.value = country.toLowerCase();
-
-  selectCountry.appendChild(option);
-});
 
 zip.addEventListener("input", function () {
   if (zip.validity.valid) {
@@ -280,6 +281,7 @@ zip.addEventListener("input", function () {
   }
 });
 
+// Validation property for Zip Code selection
 function showZipError() {
   const fiveDigits = "Enter 5 digits";
   if (zip.validity.patternMismatch) {
@@ -288,3 +290,57 @@ function showZipError() {
   }
   zipError.className = "error active";
 }
+
+password.addEventListener("input", function () {
+  if (password.validity.valid) {
+    passwordError.innerHTML = "";
+    passwordError.className = "error";
+  } else {
+    showPasswordError();
+  }
+});
+
+function showPasswordError() {
+  if (password.validity.patternMismatch) {
+    passwordError.textContent =
+      "Password needs to be 8 characters long, 1 number, 1 uppercase and 1 lowercase letter.";
+  }
+  passwordError.className = "error active";
+}
+
+passwordConfirmation.addEventListener("input", function () {
+  if (passwordConfirmation.validity.valid) {
+    passwordConfirmationError.innerHTML = "";
+    passwordConfirmationError.className = "error";
+  } else {
+    passwordMismatch();
+  }
+});
+
+function passwordMismatch() {
+  if (password.value != passwordConfirmation.value) {
+    passwordConfirmationError.textContent = "Passwords do not match";
+  } else if (passwordConfirmation.validity.patternMismatch) {
+    passwordConfirmationError.textContent =
+      "Password needs to be 8 characters long, 1 number, 1 uppercase and 1 lowercase letter.";
+  }
+  passwordConfirmationError.className = "error active";
+}
+
+// Creating options for countries select element
+const placeholder = () => {
+  const option = document.createElement("option");
+  option.innerHTML = "Select a Country";
+  option.value = "";
+  selectCountry.appendChild(option);
+};
+
+placeholder();
+
+countries.forEach((country) => {
+  const option = document.createElement("option");
+  option.innerHTML = country;
+  option.value = country.toLowerCase();
+
+  selectCountry.appendChild(option);
+});
