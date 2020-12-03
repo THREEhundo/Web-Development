@@ -701,5 +701,462 @@ We can keep chaining forever but there is something missing here.
 What if we want step 2 to wait for step 1 to do something asynchronously?
 We're using an immediate return statement, which immediately fulfills the chained promise.
 
+How Promise.resolve(...) operates, returning a received genuine promise or unwrapping a thenable and recursively unwrapping it, is how you make a Promise sequence async.
+
+The same unwrapping happens if you return a thenable or Promise from the fulfillment/rejection handler.
+*/
+
+var p = Promise.resolve(21)
+
+p.then(function(v) {
+  console.log(v); // 21
+
+  // create a new promise and return it
+  return new Promise(resolve, reject) {
+    // fulfill with value 42
+    resolve(v * 2)
+  }
+}).then(function(v) {
+  console.log(v); // 42
+})
+
+// **NOTE** Even though 42 was wrapped in a promise that was returned, it still got unwrapped and became the resolution of the chained promise.
+// The 2nd then(...) still received 42.
+
+// WITH ASYNC THINGS WORK THE SAME!
+
+var p = Promise.resolve(21)
+
+p.then(function(v) {
+  console.log(v); // 21
+
+  // create a promise to return
+  return new Promise(resolve, reject) {
+    setTimeout(function() {
+      // fulfill with value 42
+      resolve(v * 2)
+    }, 100)
+  }
+}).then(function(v) {
+  // runs after the 100ms delay in the prev step
+  console.log(v);
+})
+
+/*
+^Unlimited amount of async steps^
+
+Returning a value is optional. If you don't return an explicit value, an implicit undefined is assumed, and the promises still chain together the same way. Each Promise resolution is just a signal to proceed to the next step.
+*/
+
+function delay(time) {
+  return new Promise(function(resolve, reject) {
+    setTimeout(resolve, time)
+  })
+}
+
+delay(100).then(function step2() {
+  console.log("step 2 (after 100ms)");
+  return delay(200)
+}).then(function step3() {
+  console.log("step 3 (after 200ms)");
+}).then(function step4() {
+  console.log("step 4 (next Job)");
+  return delay(50)
+}).then(function step5() {
+  console.log("step 5 (after another 50ms)");
+})
+
+/*
+There are 2 promises above.
+
+A more practical example is with Ajax requests.
+*/
+
+// assume an ajax({url}, {cb}) utility
+
+// Promise-aware ajax
+function request(url) {
+  return new Promise(function(resolve, reject) {
+    // ajax(...) callback should be our promise's resolve(...) function
+    ajax(url, resolve)
+  })
+}
+
+/*
+We first define a request(...) utility that constructs a promise to represent the completion of the ajax(...) call:
+*/
+
+request("http://some.url.1/").then(function(response1) {
+  return request("http://some.url.2/?v=" + response1)
+}).then(function(request2) {
+  console.log(request2);
+})
+
+/*
+***NOTE***
+Devs commonly enocouter situations where they want to do Promise-aware async flow control with utilities that are not themselves Promise enabled. Native ES6 Promise mechanism doesn't automatically solve this pattern, practically all Promise libraries do.
+
+1. Using request(...) we create the first step in the chain by calling it with the first url.
+2. Once response1 is returned we use that value to make the 2nd url and make our 2nd request(...) call. That is returned for the 3rd ajax call to complete. We end with logging response2.
+
+What if there is an error along the chain?
+Error/exception is on a per Promise basis.
+It's possible to catch an error at any point in the chain.
+*/
+
+// step 1
+request("http://some.url.1/")
+
+// step 2
+.then(function(response1) {
+  foo.bar() // undefined!
+
+  // never gets here
+  return request("http://some.url.2/?v=" + response1)
+})
+
+// step 3
+.then(function(response2) {
+  // never gets here
+},
+// rejection handler to catch the error
+function rejected(err) {
+  console.log(err); // TypeError from foo.bar() error
+  return 42
+})
+
+// step 4
+.then(function(msg) {
+  console.log(msg); // 42
+})
+
+// When the error happens in step 2, the rejection handler in step 3 catches it.
+// The return value (42), if any, from that rejection handler fulfills the promise for the next step (4), and turns the chain back to a fulfillment state.
+
+/*
+***NOTE***
+When returning a promise form a fulfillment handler, it's unwrapping can delay the next step. It's also true for returning promises from rejection handlers.
+
+If you call then(...) on a promise and you only pass a fulfillment handler to it, an assumed rejection handler is substituted.
+*/
+
+var p = new Promise(function(resolve, reject) {
+  reject("Oops")
+})
+
+var p2 = p.then(function fulfilled() {
+  // never gets here
+}
+// assumed rejection handler, if omitted or any other non-function value passed
+// function(err) {throw err;}
+)
+
+/*
+The assumed rejection handler rethrows the error, forcing p2 to reject with the same error reasoning. This allows the error to continue propagation along a Promise chain until an explicitly defined rejection handler is encountered.
+
+***NOTE***
+If a proper valid function is not passed as the fulfillment handler parameter to then(...), there's also a default handler substitute:
+*/
+
+var p = Promise.resolve(42)
+
+p.then(
+  // assumed fulfillment handler, if omitted or non-function value passed
+  // function(v) {return v;}
+  null, function rejected(err) {
+    // never gets here
+  }
+)
+
+/*
+The default fulfillment handler simply passes the value it receives along to the next Promise step.
+
+***NOTE***
+The then(null, function(err){...}) pattern -- only handling rejections (if any) but letting fulfillments pass through -- has a shortcut in the API:
+catch(function(err){...})
+
+Promise Chain Flow Control Review
+  * A then(...) call against one Promise automatically produces a new Promise to return from the call.
+  * Inside the fulfillment/rejection handlers, if you return a value or an exception is thrown, the new returned Promise is resolved accordingly.
+  * If the fulfillment or rejection handler returns a Promise, it is unwrapped, so that whatever its resolution is will become the resolution of the chained Promise returned from the current then(...)
+
+Chaining is best thought of as a side benefit of how Promises compose, rather than the main intent.
+
+Promises normalize asynchrony and encapsulate time-dependant value state. That is what lets us chain them together.
+*/
+
+/*
+TERMINOLOGY: RESOLVE, FULFILL, REJECT
+*/
+
+var p = new Promise(function(x,y) {
+  // X() for fulfillment
+  // Y() for rejection
+})
+
+/*
+It doesn't matter what the callbacks are called to the computer.
+The first parameter is usually called resolve(...)
+
+Why shouldn't we use fulfill(...) instead of resolve(...) to be more accurate?
+*/
+
+var fulfilledPr = Promise.resolve(42)
+
+var rejectedPr = Promise.reject("Oops")
+
+/*
+Promise.resolve(...) creates a Promise that's resolved to the value given to it. 42 is a normal, non-Promise, non-thenable value, so the fulfilled promise fulfilledPr is created for the value 42.
+Promise.reject("Oops") creates the rejected promise rejectedPr for the reason "Oops"
+
+Why is the word "resolve" unambiguous and more accurate, if used explicitly in a context that could result in fulfillment or rejection:
+*/
+
+var rejectedTh = {
+  then: function(resolved, rejected) {
+    rejected("Oops")
+  }
+}
+
+var rejectedPr = Promise.resolve(rejectedTh)
+
+/*
+Promise.resolve(...) will return a recieved genuine Promise, or unwrap a thenable. If the unwrapping reveals a rejected state, the Promise returned from Promise.resolve(...) returns the same rejected state.
+
+Promise.resolve(...) is an accurate name for the API method, because it can result in either fulfillment or rejection.
 
 */
+
+var rejectedPr = new Promise(function(resolve, reject) {
+  // resolve this promise with a rejected promise
+  resolve(Promise.reject("Oops"))
+})
+
+rejectedPr.then(
+  function fulfilled() {
+    // never gets here
+  },
+  function rejected(err) {
+    console.log(err);   // "Oops"
+  }
+)
+
+/*
+***WARNING***
+
+reject(...) DOES NOT do the unwrapping that resolve(...) does.
+If you pass a Promise/thenable value to reject(...), that untouched value will be set as the rejection reason.
+A subsequent rejection handler would receive the actual Promise/thenable you passed to reject(...) and NOT IT'S UNDERLYING IMMEDIATE VALUE.
+*/
+
+// The callbacks provided to then(...) should be called
+// fulfilled(...) & rejected(...)
+
+function fulfilled(msg) {
+  console.log(msg);
+}
+
+function rejected(err) {
+  console.error(err)
+}
+
+p.then(fulfilled, rejected)
+
+/*
+ERROR HANDLING
+
+The finer details of error handling in async coding.
+
+The go to error handling is the synchronous try...catch construct.
+Doesn't help in async code patterns:
+*/
+
+function foo() {
+  setTimeout(function() {
+    baz.bar()
+  }, 100)
+}
+
+try {
+  foo()
+  // laterthrows global error from baz.bar()
+}
+catch(err) {
+  // never gets here
+}
+
+/*
+In callbacks, some standards have emerged for patterned error handling, most notable is the "error-first callback" style:
+*/
+
+function foo(cb) {
+  setTimeout(function() {
+    try {
+      var x = baz.bar()
+      cb(null, x) // success
+    }
+    catch (err) {
+      cb(err)
+    }
+  }, 100)
+}
+
+foo(function(err, val) {
+  if(err) {
+    console.error(err)  // bummer
+  } else {
+    console.log(val);
+  }
+})
+
+/*
+***NOTE***
+If baz.bar() was its own async completing function, any async errors inside it would not be catchable.
+
+This sort of error handling is async capable but it doesn;t compose well.
+
+Error handling in Promises with the rejection handler passed to then(...) Promises don't use the "error-first-callback" design style, but uses "split-callbacks".
+*/
+
+var p = Promise.reject("Oops")
+
+p.then(function fulfilled() {
+  // never gets here
+},
+function rejected(err) {
+  console.log(err); // "Oops"
+})
+
+// While this pattern of error handling makes sense on the surface, the nuances of Promise error handling is a bit more difficult to grasp.
+
+var p = Promise.resolve(42)
+
+p.then(function fulfilled(msg) {
+  // numbers don't have string functions, will throw error
+  console.log(msg.toLowerCase());
+},
+function rejected(err) {
+  // never gets here
+})
+
+/*
+The handler isn't notified here because that error handler is for the p promise, which has already been fulfilled with 42. The p promise is immutable, so the only promise that can be notified of the error is the one returned from p.then(...). We do not capture it here.
+
+Error handling in Promises is prone to error.
+
+***WARNING***
+If you use the Promise API in an invalid way and an error occurs that prevents proper Promise construction, the result will be an immediately thrown exception, NOT A REJECTED PROMISE!
+You can't get a rejected Promise if you don't use the Promise API validly enough to actually construct a Promise in the first place.
+*/
+
+/*
+PIT OF DESPAIR
+Developers fall into the pit of despair -- where accidents are punished -- and you have to try harder to get out.
+
+Promise error handling by default, assumes that you want any error to be swallowed by the Promise state, and if you forget to observe the state, the error is silent.
+
+Create a pit of success where it is harder to get it wrong.
+
+Some developers always ends the chain with a final catch(...)
+*/
+
+var p = Promise.resolve(42)
+
+p.then(function fulfilled(msg) {
+  // throws error
+  console.log(msg.toLowerCase());
+}).catch(handleErrors)
+
+/*
+Because we didn't pass a rejection handler to then(...), the default handler was substituted, which simply propagates the error to the next promse in the chain.
+Both erros that come into p, and erros that come after p in its resolution will filter down to the final handleErrors(...)
+
+Still need to check the last catch(...) for errors.
+*/
+
+/*
+UNCAUGHT HANDLING
+A common method is using done(...).
+This marks the end of a promise chain.
+It doesn't create and return a Promise, so the callback passed to done(...) are not wired to report problems to a chained Promise that doesn't exist.
+
+What happens when an error is thrown?
+Any exception inside a done(...) rejection handler would be thrown as a global uncaught error.
+*/
+
+var p = Promise.resolve(42)
+
+p.then(function fulfilled(msg) {
+  console.log(msg.toLowerCase());
+}).done(null, handleErrors)
+// if handeErrors(...) caused its own exception, it would throw globally here.
+
+/*
+The biggest weakness with this is that it's not part of the ES6 standard.
+*/
+
+/*
+PROMISE PATTERNS
+
+There are a lot of variations on asynchronous patterns that we can build as abstractions on top of Promises. These patterns serve to simplify the expression of async flow control -- which helps make our code more reason-able and more maintainable -- even in the most complex parts of our programs.
+*/
+
+/*
+Promise.all([...])
+
+In a Promise chain, only one async task is being run at any given moent.
+What do we do when two or more steps are running in parallel?
+Promise.all([...])
+
+Ex. Make two Ajax requests at the same time, and wait for both to finish, regardless of their order, before making a third Ajax request.
+*/
+
+// Ex.
+var p1 = request( "http://some.url.1/" );
+var p2 = request( "http://some.url.2/" );
+
+Promise.all([p1, p2]).then(function(msgs) {
+  // both p1 & p2 fulfill and pass in their msgs here
+  return request(
+    "http://some.url.3/?v=" + msgs.join(",")
+  )
+}).then(function(msg) {
+  console.log(msg);
+})
+
+/*
+Promise.all([...]) expects a single argument, an array, generally of Promise instances.
+
+***NOTE***
+The array of values can be Promises, thenables, or even immediate values.
+Each value is passed through Promise.resolve(...) to make sure it's a genuine Promise to be waited on, so an immediate value will just be normalized into a Promise for that value.
+If the array is empty, the main Promise is immediately fulfilled.
+
+The naub promise returned will only be fulfilled if and when all its constituent promises are fulfilled. If any are rejected, the main promise is immediately rejected, discarding all results.
+
+Alawys attach a rejection/error handler to every promise, even and especially the one that comes back from Promise.all([...])
+*/
+
+/*
+Promise.race([...])
+
+Sometimes you only need to respond to the first promise that returns a value, letting the other Promises fall away.
+
+Promise.race([...]) also expects an array.
+Immediate values don't make sense here because they would always win.
+
+***WARNING***
+The race always requires one runner, so if you pass an empty array, instead of immediately resolving, the main race([...]) will never resolve.
+*/
+
+// Ex.
+var p1 = request( "http://some.url.1/" );
+var p2 = request( "http://some.url.2/" );
+
+Promise.race([p1, p2]).then(function(msg) {
+  return request(
+    "http://some.url.3/?v=" + msg
+  )
+}).then(function(msg) {
+  console.log(msg);
+})
