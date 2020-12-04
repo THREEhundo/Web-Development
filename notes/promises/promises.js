@@ -1160,3 +1160,390 @@ Promise.race([p1, p2]).then(function(msg) {
 }).then(function(msg) {
   console.log(msg);
 })
+
+// Because only one promise wins, the fulfillment value is a single message.
+
+/*
+TIMEOUT RACE
+*/
+// Ex. "promise timeout"
+// `foo()` is a Promise-aware function
+
+// `timeoutPromise(..)`, defined ealier, returns
+// a Promise that rejects after a specified delay
+
+// setup a timeout for `foo()`
+Promise.race([foo(), timeoutPromise(3000)])
+.then(function() {
+  // foo(...) fulfilled in time!
+}, function(err) {
+  // either foo(...) rejected, or it just didn't finish in time, so inspect err to know which.
+})
+
+// This timeout pattern works well in most cases.
+// But there are some nuances to consider that apply to both Promise.all([...]) & Promise.race([...])
+
+/*
+FINALLY
+
+Some devs have proposed that Promises need a finally(...) callback registration.
+It is always called when a Promise resolves and allows you to specify any cleanup necessary.
+Does not exist.
+*/
+// Ex.
+var p = Promise.resolve(42)
+
+p.then(something)
+.finally(cleanup)
+.then(another)
+.finally(cleanup)
+
+// In the meantime, we can make a static helper utility that lets us observe the resolution of a Promise:
+
+if(!Promise.observe) {
+  Promise.observe = function(pr, cb) {
+    // side-observe pr's resolution
+    pr.then(function fulfilled(msg) {
+      // schedule callback async
+      Promise.resolve(msg).then(cb)
+    },
+  function rejected(err) {
+    // schedule callback async
+    Promise.resolve(err).then(cb)
+  })
+  //return original promise
+  return pr
+  }
+}
+
+// Timeout example from before with observe
+Promise.race([
+  Promise.observe(
+    foo(),                  // attempt foo()
+    function cleanup(msg) {
+    // clean up after foo() even if it didn't finish before the timeout.
+  }),
+  timeoutPromise(3000)    // Give it 3 seconds
+])
+
+/*
+This helper is just an illustration of how you could observe the completions of Promises without interfering with them.
+*/
+
+/*
+VARIATIONS ON all([...]) & race([...])
+  * none([...]) is like all([...]) but fulfillments and rejections are transposed.
+  All Promises need to be rejected -- rejections become the fulfillment values and vice versa.
+  * any([...]) is like all([...]) but it ignores any rejections, so only one needs to fulfill instead of all of them.
+  * first([...]) is like a race with any([...]), which is that it ignores any rejections and fulfills as soon as the first Promise fulfills.
+  * last([...]) is like first([...]), but only the latest fulfillment wins.
+*/
+
+// polyfill-safe guard check
+if(!Promise.first) {
+  Promise.first = function(prs) {
+    return new Promise(resolve, reject) {
+      // loop through all promises
+      prs.forEach(function(pr) {
+        // normalize the value
+        Promise.resolve(pr)
+        // whichever one fulfills first wins and gets to resolve the main promise.
+        .then(resolve)
+      })
+    }
+  }
+}
+
+/*
+first(...) doesn't reject if all its promises reject; it simply hangs, same as Promise.race([...]).
+*/
+
+/*
+CONCURRENT ITERATIONS
+
+Sometimes you want to iterate over an array of Promises like you can do with a synchronous array (forEach(...), map(...))
+If the task is synchronous, these work fine.
+
+But if the task is asynchronous, you can use async versions of these utilities.
+
+As an example let's examine an asynchronous map(...) utility that takes an array of values, plus a function to perform against them.
+map(...) returns a promise whose fulfillment value is an array that holds (in the same mapping order) the async fulfillment value from each task:
+*/
+
+if(!Promise.map) {
+  Promise.map = function(vals, cb) {
+    // new Promise that waits for all mapped promises
+    return Promise.all(
+      // note: regular array map(...) turns the array of values into an array of promises
+      vals.map(
+        // replace val with a new promise that resolves after val is async mapped
+        function(val) {
+          return new Promise(function(resolve) {
+            cb(val, resolve)
+          })
+        }
+      )
+    )
+  }
+}
+
+// ***NOTE*** With this map(...) you can't signal async rejection, but if a synchronous exception/error occurs inside of the mapping callback(cb(...)), the main Promise.map(...) returned promise would reject.
+
+// map(..) with a list of Promises:
+
+var p1 = Promise.resolve( 21 );
+var p2 = Promise.resolve( 42 );
+var p3 = Promise.reject( "Oops" );
+
+// double values in list even if they're in Promises
+Promise.map([p1, p2, p3], function(pr, done) {
+  // make sure the item itself is a Promise
+  Promise.resolve(pr)
+  .then(
+    // extract value as v
+    function(v) {
+      // map fulfillment v to new value
+      done(v * 2)
+    },
+    // or, map to promise rejection message
+    done
+  )
+}).then(function(vals) {
+  console.log(vals);  // [42,84,"Oops"]
+})
+
+/*
+PROMISE API RECAP
+
+new Promise(...) Constructor
+The revealing constructor Promise(...) must be used with new, and must be provided a function callback that is synchronously/immediately called.
+This function is passed two function callbacks that act as resolution capabilities for the promise.
+Commonly known as resolve(...) & reject(...):
+*/
+
+var p = new Promise(function(resolve, reject) {
+  // resolve(...) to fulfill
+  // reject(...) to reject promise
+})
+
+// reject(...) simply rejects the promise, but resolve(...) can either fulfill the promise or reject it, depending on what it's passed.
+// If resolve(...) is passed an immediate, non-Promise, non-thenable value, then the promise is fulfilled with that value.
+
+// But if resolve(...) is passed a genuine Promise or thenable value, that value is unwrapped recursively, and whatever its final resolution/state is will be adopted by the promise.
+
+/*
+Promise.resolve(...) & Promise.reject(...)
+
+A shortcut for creating an already-rejected Promise is Promise.reject(...), so these two promises are equivalent:
+*/
+
+var p = new Promise(function(resolve, reject) {
+  reject("Oops")
+})
+
+var p2 = Promise.reject("Oops")
+
+/*
+Promise.resolve(...) is usually used to create an already-fulfilled Promise in a similar way to Promise.reject(...).
+However, Promise.resolve(...) also unwraps thenable values.
+In that case, the Promise returned adopts the final resolution of the thenable you passed in.
+*/
+
+var fulfilledTh = {
+  then: function(cb) {cb(42)}
+}
+var rejectedTh = {
+  then: function(cb, errCb) {
+    errCb("Oops")
+  }
+}
+
+var p1 = Promise.resolve(fulfilledTh)
+var p2 = Promise.reject(rejectedTh)
+
+/*
+p1 will be a fulfilled promise
+p2 will be a rejected promise
+*/
+
+/*
+Promise.resolve(...) doesn't do anything if what you pass is already a genuine Promise; it just returns the value directly.
+*/
+
+/*
+then(...) & catch(...)
+
+Each Promise instance has then(...) & catch(...) methods, which allow registering of fulfillment and rejection handlers for the Promise.
+Once the Promise is resolved, one or the other of these handlers will be called, but not both, and it will always be called asynchronously.
+
+then(...) takes one or two parameters, the first for the fulfillment callback, and the second for the rejection callback.
+If either is omitted or otherwise passed as a non-function value, a default callback is substituted respectively.
+The default fulfillment callback simply passes the message along, while the default rejection callback simply rethrows (propagates) the error reason it receives.
+
+catch(...) takes only the rejection callback as a parameter and automatically substitutes the default fulfillment callback.
+It is equivalent to then(null, ...)
+*/
+
+p.then(fulfilled)
+p.then(fulfilled, rejected)
+p.catch(rejected)   // or p.then(null, rejected)
+
+/*
+then(...) and catch(...) also create and return a new promise.
+If the fulfillment or rejection callbacks have an exception thrown, the returned promise is rejected.
+If either callback returns an immediate, non-Promise, non-thenable value, that value is set as the fulfillment for the returned Promise.
+If the fulfillment handler specifically returns a promse or thenable value, that value is unwrapped and becomes the resolution of the returned promise.
+*/
+
+/*
+Promise.all([...]) & Promise.race([...])
+
+The static helpers .all(...) & .race(...) create a Promise as their return value.
+The resolution of that promise is controlled by the array of promises passed in.
+
+Promise.all([...])'s promises passed to it must fulfill for the returned promise to fulfill.
+If any are rejected, the main returned promise is rejected.
+For fulfillment, you receive an array of all the passed in promises' fulfillment values.
+For rejection, you receive just the first promise rejection reason value.
+This is called a "gate" pattern.
+
+Promise.race([...])'s first promise to resolve (fulfillment or rejection) "wins".
+This is called a "latch" pattern.
+*/
+
+var p1 = Promise.resolve(42)
+var p2 = Promise.resolve("Hello World")
+var p3 = Promise.reject("Oops")
+
+Promise.race([p1, p2, p3])
+.then(function(msg) {
+  console.log(msg);   // 42
+})
+
+Promise.all([p1, p2, p3])
+.catch(function(err) {
+  console.error(err)  // "Oops"
+})
+
+Promise.all([p1, p2])
+.then(function(msgs) {
+  console.log(msgs);  // [42, "Hello World"]
+})
+
+/*
+PROMISE LIMITATIONS
+
+SEQUENCE ERROR HANDLING
+
+The limitations of how Promises are designed -- how they chain, specifically -- creates a very easy pitfall where an error in a Promise chain can be silently ignored accidentally.
+
+A Promise chain is just a multiple Promises strung together.
+There's no entity to refer to the entire chain as a single thing.
+Therefore there is no way to observe any erros that may occur.
+
+If you construct a Promise chain that has no error handling, any error will propagate indefinitely down the chain, until observed. So in that case, having a reference to the last promise in the chain is enough, because you can register a rejection handler there, and it will be notified of any proagated errors:
+*/
+
+// `foo(..)`, `STEP2(..)` and `STEP3(..)` are
+// all promise-aware utilities
+
+var p = foo(42)
+.then(STEP2)
+.then(STEP3)
+
+/*
+p doesn't point to the first promise call (foo(42)), but instead from the last promise (STEP3) call.
+
+Also, no step in the promise chain is observably doing its own error handling.
+That means you could then register a rejection error handler on p, and it would be notified if any errors occur anywhere in the chain:
+*/
+
+p.catch(handleErrors)
+
+/*
+But if any step of the chain does its own error handling, your handleErrors(...) won't be notified.
+
+This is the same limitation that exists with a try...catch that can catch an exception and simply swallow it.
+*/
+
+/*
+SINGLE VALUE
+
+Promises only have a single fulfillment value or a single rejection reason.
+In sophisticated scenarios this may be limiting.
+
+Usually devs construct a values wrapper (object or array) to contain these multiple messages.
+This works but can get messy wrapping and unwrapping your messages with every single step of your Promise chain.
+*/
+
+/*
+SPLITTING VALUES
+
+Sometimes you can decompose the problem into two or more Promises.
+
+Imagine you have a utility foo(...) that produces 2 values (x & y) asynchronously:
+*/
+
+function getY(x) {
+  return new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      resolve((3 * x) - 1)
+    }, 100)
+  })
+}
+
+function foo(bar, baz) {
+  var x = bar * baz
+
+  return getY(x)
+  .then(function(y) {
+    // wrap both values into container
+    return [x, y]
+  })
+}
+
+foo(10, 20)
+.then(function(msgs) {
+  var x = msgs[0]
+  var y = msgs[1]
+
+  console.log(x, y);
+})
+
+// First, let's rearrange what foo(...) returns so that we don't have to wrap x and y into a single array value to transport through one Promise. Instead we can wrap each value into its own promise:
+
+function foo(bar, baz) {
+  var x = bar * baz
+
+  return [
+    Promise.resolve(x),
+    getY(x)
+  ]
+}
+
+Promise.all(
+  foo(10, 20)
+).then(function(msgs) {
+  var x = msgs[0]
+  var y = msgs[1]
+  console.log(x, y);
+})
+
+/*
+Is an array of promises really better than an array of values passed through a single promise? Syntactically, it's not much of an improvement.
+
+But this approach more closely embraces the Promise design theory. It's now easier in the future to refactor to split the calulation of x and y into seperate function.
+*/
+
+/*
+UNWRAP/SPREAD ARGUMENTS
+
+The var x = ... & var y = ... assignments are still awkward overhead. We can use array parameter destructuring:
+*/
+
+Promise.all(
+  foo(10,20)
+)
+.then(function([x, y]) {
+  console.log(x, y);
+})
