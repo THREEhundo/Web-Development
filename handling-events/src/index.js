@@ -5,14 +5,18 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Toggle from "./components/Toggle";
 import LoggingButton from "./components/LoggingButton";
-import Greeting from "./components/Greeting";
+import LoginControl from "./components/LoginControl";
+import Mailbox from "./components/Mailbox";
+
+const messages = ["React", "Re: React", "Re:Re: React"];
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
     <Toggle />
     <LoggingButton />
-    <Greeting isLoggedIn={false} />
+    <LoginControl />
+    <Mailbox unreadMessages={messages} />
   </React.StrictMode>,
   document.getElementById("root")
 );
