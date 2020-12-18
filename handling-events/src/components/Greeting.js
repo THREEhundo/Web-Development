@@ -17,3 +17,9 @@ function Greeting(props) {
 }
 
 export default Greeting;
+
+/*
+Conditional Rendering
+  Works the same way it does in JS.
+  Use JS operators like if and conditional operators to create elements, and let React update the UI to match them.
+*/

@@ -1,5 +1,13 @@
 import React from "react";
 
+/*
+LoginControl will be a stateful component.
+
+It will render either <LoginButton /> or <LogoutButton /> depending on its current state. It will also render a <Greeting /> from the previous example
+
+While decalring a variable and using an if statement is a good way to conditionally render a component, sometimes you might want to use a shorter syntax. There are a few ways to inline conditions in JSX.
+
+*/
 class LoginControl extends React.Component {
   constructor(props) {
     super(props);
@@ -50,6 +58,12 @@ function Greeting(props) {
   return <GuestGreeting />;
 }
 
+/*
+Element Variables
+  You can use variables to store elements.
+  This can help you conditionally render a part of the component while the rest of the output doesn't change.
+
+*/
 function LoginButton(props) {
   return <button onClick={props.onClick}>Login</button>;
 }
