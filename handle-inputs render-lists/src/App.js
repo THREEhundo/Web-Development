@@ -16,6 +16,16 @@ class App extends Component {
     });
   };
 
+  handleDelete = (itemToBeDeleted) => {
+    const updatedArr = this.state.tasks.filter((_item) => {
+      return _item != itemToBeDeleted;
+    });
+
+    this.setState({
+      tasks: updatedArr,
+    });
+  };
+
   onSubmitTask = (e) => {
     e.preventDefault();
     this.setState({
@@ -35,11 +45,15 @@ class App extends Component {
             type="text"
             id="taskInput"
             onChange={this.handleChange}
-            value={task}
+            // value={task}
           />
           <button type="submit">Add Task</button>
         </form>
-        <Overview className="style" tasks={tasks} />
+        <Overview
+          className="style"
+          tasks={tasks}
+          handleDelete={this.handleDelete}
+        />
       </div>
     );
   }

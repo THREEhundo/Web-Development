@@ -1,17 +1,19 @@
-import "./Overview.css";
 import React from "react";
 import uniqid from "uniqid";
 
 const Overview = (props) => {
-  const { tasks, task } = props;
+  const { tasks, task, handleDelete } = props;
 
   return (
     <ul className="style">
       {tasks.map((task) => {
         return (
-          <li key={uniqid()}>
-            {tasks.indexOf(task) + 1}: {task}
-          </li>
+          <div key={uniqid()}>
+            <li>
+              {tasks.indexOf(task) + 1}: {task}
+            </li>
+            <button onClick={handleDelete.bind(this, task)}>Delete</button>
+          </div>
         );
       })}
     </ul>
