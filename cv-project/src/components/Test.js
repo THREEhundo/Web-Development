@@ -6,7 +6,7 @@ class Test extends React.Component {
   }
 
   handleFormChange(e) {
-    this.props.handleFormChange(this.props.value);
+    this.props.handleFormChange(e);
   }
 
   renderButtonColor() {
@@ -24,7 +24,8 @@ class Test extends React.Component {
           <label htmlFor="firstName">First Name:</label>
           <input
             type="text"
-            name="firstName"
+            id="firstName"
+            value={this.props.firstName}
             onChange={this.handleFormChange}
           ></input>
         </div>
@@ -32,13 +33,14 @@ class Test extends React.Component {
           <label htmlFor="lastName">Last Name:</label>
           <input
             type="text"
-            name="lastName"
+            id="lastName"
+            value={this.props.lastName}
             onChange={this.handleFormChange}
           ></input>
         </div>
         <div>
           <button
-            className={this.renderButtonColor()}
+            className={this.renderButtonColor}
             onClick={this.handleIsValid}
           >
             {this.props.isValid ? "Invalidate" : "Validate"}

@@ -47,7 +47,7 @@ class App extends React.Component {
   };
 
   render() {
-    let e;
+    // let e;
     return (
       <div className="mt-3 text-center">
         <h2>Resume App</h2>
@@ -72,7 +72,7 @@ class App extends React.Component {
           </button>
         </div> */}
         <Test
-          value={e}
+          value={(this.state.firstName, this.state.lastName)}
           handleFormChange={this.handleFormChange}
           renderButtonColor={this.renderButtonColor}
           handleIsValid={this.handleIsValid}

@@ -7,32 +7,31 @@ class App extends Component {
     this.state = {
       task: "",
       tasks: [],
-      editable: false,
+      // editable: false,
     };
   }
 
-  handleEditing = (e) => {
-    this.setState({
-      editable: true,
-      // task: e.target.value,
-    });
-  };
+  // handleEditing = (e) => {
+  //   this.setState({
+  //     editable: true,
+  //     // task: e.target.value,
+  //   });
+  // };
 
-  handleEditingDone = (e) => {
-    console.log("Handle editing is done");
-    if (e.keyCode === 13) {
-      this.setState({
-        editable: false,
-      });
-    }
-  };
+  // handleEditingDone = (e) => {
+  //   console.log("Handle editing is done");
+  //   if (e.keyCode === 13) {
+  //     this.setState({
+  //       editable: false,
+  //     });
+  //   }
+  // };
 
-  handleEditingChange = (e) => {
-    let changedTask = e.target.value;
-    this.setState({
-      task: changedTask,
-    });
-  };
+  // handleEditingChange = (e) => {
+  //   this.setState({
+  //     task: e.target.value,
+  //   });
+  // };
 
   handleChange = (e) => {
     this.setState({
@@ -59,7 +58,7 @@ class App extends Component {
   };
 
   render() {
-    const { task, tasks, editable } = this.state;
+    const { task, tasks } = this.state;
 
     return (
       <div>
@@ -77,11 +76,11 @@ class App extends Component {
           className="style"
           tasks={tasks}
           value={task}
-          editable={editable}
+          // editable={editable}
           handleDelete={this.handleDelete}
-          handleEditing={this.handleEditing}
-          handleEditingDone={this.handleEditingDone}
-          handleEditingChange={this.handleEditingChange}
+          // handleEditing={this.handleEditing}
+          // handleEditingDone={this.handleEditingDone}
+          // handleEditingChange={this.handleEditingChange}
         />
       </div>
     );
