@@ -7,8 +7,32 @@ class App extends Component {
     this.state = {
       task: "",
       tasks: [],
+      editable: false,
     };
   }
+
+  handleEditing = (e) => {
+    this.setState({
+      editable: true,
+      // task: e.target.value,
+    });
+  };
+
+  handleEditingDone = (e) => {
+    console.log("Handle editing is done");
+    if (e.keyCode === 13) {
+      this.setState({
+        editable: false,
+      });
+    }
+  };
+
+  handleEditingChange = (e) => {
+    let changedTask = e.target.value;
+    this.setState({
+      task: changedTask,
+    });
+  };
 
   handleChange = (e) => {
     this.setState({
@@ -35,7 +59,7 @@ class App extends Component {
   };
 
   render() {
-    const { task, tasks } = this.state;
+    const { task, tasks, editable } = this.state;
 
     return (
       <div>
@@ -45,14 +69,19 @@ class App extends Component {
             type="text"
             id="taskInput"
             onChange={this.handleChange}
-            // value={task}
+            value={task}
           />
           <button type="submit">Add Task</button>
         </form>
         <Overview
           className="style"
           tasks={tasks}
+          value={task}
+          editable={editable}
           handleDelete={this.handleDelete}
+          handleEditing={this.handleEditing}
+          handleEditingDone={this.handleEditingDone}
+          handleEditingChange={this.handleEditingChange}
         />
       </div>
     );
