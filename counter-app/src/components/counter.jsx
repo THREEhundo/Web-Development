@@ -18,7 +18,8 @@ class Counter extends Component {
     );
   }
 
-  handleIncrement = () => {
+  handleIncrement = (e) => {
+    console.log(e);
     this.setState({
       count: this.state.count + 1,
     });
@@ -30,7 +31,7 @@ class Counter extends Component {
         <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
         <button
           className="btn btn-secondary btn-sm"
-          onClick={this.handleIncrement}
+          onClick={() => this.handleIncrement({ id: 1 })}
         >
           Increment
         </button>
