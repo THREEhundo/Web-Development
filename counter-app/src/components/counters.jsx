@@ -16,7 +16,6 @@ class Counters extends Component {
     const index = counters.indexOf(counter);
     counters[index] = { ...counter };
     counters[index].value++;
-    console.log(this.state.counters[index]);
     this.setState({
       counters,
     });
