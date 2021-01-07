@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class Counter extends Component {
   state = {
     count: 0,
-    tags: [],
+    tags: ["tag1", "tag2", "tag3"],
   };
 
   renderTags() {
@@ -18,11 +18,20 @@ class Counter extends Component {
     );
   }
 
+  handleIncrement = () => {
+    console.log("Increment Clicked", this.state.count);
+  };
+
   render() {
     return (
       <div>
         <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
-        <button className="btn btn-secondary btn-sm">Increment</button>
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={this.handleIncrement}
+        >
+          Increment
+        </button>
         <div>
           {this.state.tags.length === 0 && <h1>YER</h1>}
           {/* && operator returns the second truthy value! */}
