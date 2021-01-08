@@ -3,19 +3,28 @@ import React from "react";
 class ContactMe extends React.Component {
   formatPhone = (props) => {
     const cell = props;
-    console.log(cell);
     const areaCode = cell.slice(0, 3);
     const three = cell.slice(3, 6);
     const four = cell.slice(6, 9);
     return areaCode.concat("-", three).concat("-", four);
   };
   render() {
+    const { name, email, handleChange, cell } = this.props;
     return (
       <div>
         <h4>Contact Me</h4>
-        <div>{this.props.name}</div>
-        <div>{this.formatPhone(this.props.cell)}</div>
-        <div>{this.props.email}</div>
+        <div>{name}</div>
+        <div>{this.formatPhone(cell)}</div>
+        <div>{email}</div>
+        <form id="name">
+          <input id="fullName" type="text" onChange={handleChange} />
+        </form>
+        <form id="contactInfo">
+          <label>Number</label>
+          <input type="tel" />
+          <label>Email</label>
+          <input type="email" />
+        </form>
       </div>
     );
   }

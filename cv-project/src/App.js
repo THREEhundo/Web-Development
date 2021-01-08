@@ -12,6 +12,13 @@ class App extends React.Component {
       email: "nedflanders@gmail.com",
     };
   }
+  handleChange = (e) => {
+    const id = e.target.id;
+    this.setState({
+      [id]: e.target.value,
+    });
+  };
+
   render() {
     return (
       <div>
@@ -20,6 +27,7 @@ class App extends React.Component {
           name={this.state.fullName}
           cell={this.state.cell}
           email={this.state.email}
+          handleChange={this.handleChange}
         />
       </div>
     );
