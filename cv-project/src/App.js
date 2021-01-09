@@ -12,11 +12,19 @@ class App extends React.Component {
       email: "nedflanders@gmail.com",
     };
   }
+
   handleChange = (e) => {
     const id = e.target.id;
     this.setState({
       [id]: e.target.value,
     });
+  };
+
+  onSubmit = (e) => {
+    if (e.keyCode === 13) {
+      return;
+    }
+    e.preventDefault();
   };
 
   render() {
@@ -28,6 +36,7 @@ class App extends React.Component {
           cell={this.state.cell}
           email={this.state.email}
           handleChange={this.handleChange}
+          handleSubmit={this.onSubmit}
         />
       </div>
     );

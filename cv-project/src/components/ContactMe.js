@@ -1,3 +1,5 @@
+import edit from "../edit.png";
+import "./ContactMe.css";
 import React from "react";
 
 class ContactMe extends React.Component {
@@ -13,10 +15,15 @@ class ContactMe extends React.Component {
     return (
       <div>
         <h4>Contact Me</h4>
-        <div>{name}</div>
+        <div>
+          {name}
+          <button>
+            <img className="edit" src={edit} alt="editField" />
+          </button>
+        </div>
         <div>{this.formatPhone(cell)}</div>
         <div>{email}</div>
-        <form id="name">
+        <form id="name" onSubmit={this.props.handleSubmit}>
           <input id="fullName" type="text" onChange={handleChange} />
         </form>
         <form id="contactInfo">
