@@ -3,29 +3,37 @@ import "./ContactMe.css";
 import React from "react";
 
 class ContactMe extends React.Component {
-  formatPhone = (props) => {
-    const cell = props;
-    const areaCode = cell.slice(0, 3);
-    const three = cell.slice(3, 6);
-    const four = cell.slice(6, 9);
-    return areaCode.concat("-", three).concat("-", four);
-  };
   render() {
-    const { name, email, handleChange, cell } = this.props;
+    const { name, email, handleChange, cell, input } = this.props;
+
+    if (this.props.input) {
+    }
     return (
       <div>
         <h4>Contact Me</h4>
-        <div>
+        <div className={this.hideElement()}>
           {name}
           <button>
-            <img className="edit" src={edit} alt="editField" />
+            <img
+              className="edit"
+              src={edit}
+              alt="editField"
+              onClick={this.props.toggleInput}
+            />
           </button>
+          <form id="name" onSubmit={this.handleSubmit}>
+            <input
+              value={this.props.fullName}
+              id="fullName"
+              type="text"
+              onChange={handleChange}
+            />
+            <input type="submit" value="Submit" />
+            {/* <button>Cancel</button> */}
+          </form>
         </div>
         <div>{this.formatPhone(cell)}</div>
         <div>{email}</div>
-        <form id="name" onSubmit={this.props.handleSubmit}>
-          <input id="fullName" type="text" onChange={handleChange} />
-        </form>
         <form id="contactInfo">
           <label>Number</label>
           <input type="tel" />
@@ -35,6 +43,32 @@ class ContactMe extends React.Component {
       </div>
     );
   }
+
+  formatPhone = (props) => {
+    const cell = props;
+    const areaCode = cell.slice(0, 3);
+    const three = cell.slice(3, 6);
+    const four = cell.slice(6, 9);
+    return areaCode.concat("-", three).concat("-", four);
+  };
+
+  hideElement = () => {
+    return this.props.input ? "red" : "blue";
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (e.code === "Enter") {
+      console.log("Entering answer");
+      if (this.props.input) {
+        this.setState({
+          input: false,
+        });
+      }
+    }
+  };
+
+  input;
 }
 
 export default ContactMe;

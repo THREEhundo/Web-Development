@@ -2,3 +2,15 @@
   width: 15px;
   height: 15px;
 }
+
+.hide {
+  display: none;
+}
+
+.blue {
+  color: blue;
+}
+
+.red {
+  color: red;
+}
