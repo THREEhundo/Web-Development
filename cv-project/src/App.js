@@ -14,6 +14,22 @@ class App extends React.Component {
     };
   }
 
+  render() {
+    return (
+      <div>
+        <Heading />
+        <ContactMe
+          name={this.state.fullName}
+          cell={this.state.cell}
+          email={this.state.email}
+          handleChange={this.handleChange}
+          toggleInput={this.toggleInput}
+          handleSubmit={this.handleSubmit}
+        />
+      </div>
+    );
+  }
+
   toggleInput = () => {
     this.setState({
       input: !this.state.input,
@@ -34,22 +50,6 @@ class App extends React.Component {
       input: false,
     });
   };
-
-  render() {
-    return (
-      <div>
-        <Heading />
-        <ContactMe
-          name={this.state.fullName}
-          cell={this.state.cell}
-          email={this.state.email}
-          handleChange={this.handleChange}
-          toggleInput={this.toggleInput}
-          handleSubmit={this.handleSubmit}
-        />
-      </div>
-    );
-  }
 }
 
 export default App;

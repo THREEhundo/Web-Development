@@ -21,7 +21,7 @@ class ContactMe extends React.Component {
               onClick={this.props.toggleInput}
             />
           </button>
-          <form id="name" onSubmit={this.handleSubmit}>
+          <form id="name" onSubmit={this.props.handleSubmit}>
             <input
               value={this.props.fullName}
               id="fullName"
