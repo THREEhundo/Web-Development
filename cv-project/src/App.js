@@ -22,6 +22,7 @@ class App extends React.Component {
           name={this.state.fullName}
           cell={this.state.cell}
           email={this.state.email}
+          input={this.state.input}
           handleChange={this.handleChange}
           toggleInput={this.toggleInput}
           handleSubmit={this.handleSubmit}

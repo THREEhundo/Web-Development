@@ -6,22 +6,26 @@ class ContactMe extends React.Component {
   render() {
     const { name, email, handleChange, cell, input } = this.props;
 
-    if (this.props.input) {
-    }
     return (
       <div>
         <h4>Contact Me</h4>
-        <div className={this.hideElement()}>
-          {name}
-          <button>
-            <img
-              className="edit"
-              src={edit}
-              alt="editField"
-              onClick={this.props.toggleInput}
-            />
-          </button>
-          <form id="name" onSubmit={this.props.handleSubmit}>
+        <div>
+          <div className={this.hideDiv(input)}>
+            {name}
+            <button>
+              <img
+                className="edit"
+                src={edit}
+                alt="editField"
+                onClick={this.props.toggleInput}
+              />
+            </button>
+          </div>
+          <form
+            id="name"
+            onSubmit={this.props.handleSubmit}
+            className={this.hideInput(input)}
+          >
             <input
               value={this.props.fullName}
               id="fullName"
@@ -52,7 +56,12 @@ class ContactMe extends React.Component {
     return areaCode.concat("-", three).concat("-", four);
   };
 
-  hideElement = () => (this.props.input ? "red" : "blue");
+  hideDiv = (props) => {
+    console.log(props);
+    return props ? "hide" : "";
+  };
+
+  hideInput = (props) => (props ? "" : "hide");
 }
 
 export default ContactMe;
