@@ -52,23 +52,7 @@ class ContactMe extends React.Component {
     return areaCode.concat("-", three).concat("-", four);
   };
 
-  hideElement = () => {
-    return this.props.input ? "red" : "blue";
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    if (e.code === "Enter") {
-      console.log("Entering answer");
-      if (this.props.input) {
-        this.setState({
-          input: false,
-        });
-      }
-    }
-  };
-
-  input;
+  hideElement = () => (this.props.input ? "red" : "blue");
 }
 
 export default ContactMe;

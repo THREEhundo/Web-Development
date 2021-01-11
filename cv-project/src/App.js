@@ -27,6 +27,14 @@ class App extends React.Component {
     });
   };
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("hi");
+    this.setState({
+      input: false,
+    });
+  };
+
   render() {
     return (
       <div>
@@ -37,6 +45,7 @@ class App extends React.Component {
           email={this.state.email}
           handleChange={this.handleChange}
           toggleInput={this.toggleInput}
+          handleSubmit={this.handleSubmit}
         />
       </div>
     );
