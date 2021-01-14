@@ -10,12 +10,11 @@ class App extends React.Component {
       fullName: "Ned Flanders",
       cell: "7189005000",
       email: "nedflanders@gmail.com",
-      input: false,
+      contactInput: false,
     };
   }
 
   render() {
-    console.log("Render");
     return (
       <div>
         <Heading />
@@ -23,7 +22,7 @@ class App extends React.Component {
           name={this.state.fullName}
           cell={this.state.cell}
           email={this.state.email}
-          input={this.state.input}
+          contactInput={this.state.contactInput}
           handleChange={this.handleChange}
           toggleInput={this.toggleInput}
           handleSubmit={this.handleSubmit}
@@ -34,21 +33,20 @@ class App extends React.Component {
 
   toggleInput = () => {
     this.setState({
-      input: !this.state.input,
+      contactInput: !this.state.input,
     });
   };
 
   handleChange = (e) => {
-    const id = e.target.id;
+    const id = e.target.name;
     this.setState({
       [id]: e.target.value,
     });
-    e.target.value = "";
   };
 
   handleSubmit = (e) => {
     this.setState({
-      input: false,
+      contactInput: false,
     });
     e.preventDefault();
   };

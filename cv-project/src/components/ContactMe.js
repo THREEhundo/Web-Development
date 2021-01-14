@@ -9,7 +9,7 @@ class ContactMe extends React.Component {
       email,
       handleChange,
       cell,
-      input,
+      contactInput,
       handleSubmit,
       toggleInput,
     } = this.props;
@@ -18,7 +18,7 @@ class ContactMe extends React.Component {
       <div>
         <h4>Contact Me</h4>
         <div>
-          <div className={this.hideDiv(input)}>
+          <div className={this.hideDiv(contactInput)}>
             {name}
             <button>
               <img
@@ -32,25 +32,39 @@ class ContactMe extends React.Component {
           <form
             id="name"
             onSubmit={handleSubmit}
-            className={this.hideInput(input)}
+            className={this.hideInput(contactInput)}
           >
-            <input
-              value={name}
-              id="fullName"
-              type="text"
-              onChange={handleChange}
-            />
+            <label>
+              Name:
+              <input
+                value={name}
+                name="fullName"
+                id="fullName"
+                type="text"
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Number:
+              <input
+                type="tel"
+                value={cell}
+                name="cell"
+                id="cell"
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Email
+              <input type="email" />
+            </label>
             <input type="submit" value="Submit" />
           </form>
         </div>
-        <div>{this.formatPhone(cell)}</div>
+        <div className={this.hideDiv(contactInput)}>
+          {this.formatPhone(cell)}
+        </div>
         <div>{email}</div>
-        <form id="contactInfo">
-          <label>Number</label>
-          <input type="tel" />
-          <label>Email</label>
-          <input type="email" />
-        </form>
       </div>
     );
   }
@@ -59,7 +73,7 @@ class ContactMe extends React.Component {
     const cell = props;
     const areaCode = cell.slice(0, 3);
     const three = cell.slice(3, 6);
-    const four = cell.slice(6, 9);
+    const four = cell.slice(6, 10);
     return areaCode.concat("-", three).concat("-", four);
   };
 
