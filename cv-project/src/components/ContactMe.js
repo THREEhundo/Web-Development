@@ -30,7 +30,7 @@ class ContactMe extends React.Component {
             </button>
           </div>
           <form
-            id="name"
+            id="contactInfo"
             onSubmit={handleSubmit}
             className={this.hideInput(contactInput)}
           >
@@ -56,7 +56,13 @@ class ContactMe extends React.Component {
             </label>
             <label>
               Email
-              <input type="email" />
+              <input
+                type="email"
+                value={email}
+                name="email"
+                id="email"
+                onChange={handleChange}
+              />
             </label>
             <input type="submit" value="Submit" />
           </form>
@@ -64,7 +70,7 @@ class ContactMe extends React.Component {
         <div className={this.hideDiv(contactInput)}>
           {this.formatPhone(cell)}
         </div>
-        <div>{email}</div>
+        <div className={this.hideDiv(contactInput)}>{email}</div>
       </div>
     );
   }
