@@ -15,6 +15,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log("Render");
     return (
       <div>
         <Heading />
@@ -42,14 +43,14 @@ class App extends React.Component {
     this.setState({
       [id]: e.target.value,
     });
+    e.target.value = "";
   };
 
   handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("hi");
     this.setState({
       input: false,
     });
+    e.preventDefault();
   };
 }
 

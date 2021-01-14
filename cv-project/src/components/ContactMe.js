@@ -4,7 +4,15 @@ import React from "react";
 
 class ContactMe extends React.Component {
   render() {
-    const { name, email, handleChange, cell, input } = this.props;
+    const {
+      name,
+      email,
+      handleChange,
+      cell,
+      input,
+      handleSubmit,
+      toggleInput,
+    } = this.props;
 
     return (
       <div>
@@ -17,23 +25,22 @@ class ContactMe extends React.Component {
                 className="edit"
                 src={edit}
                 alt="editField"
-                onClick={this.props.toggleInput}
+                onClick={toggleInput}
               />
             </button>
           </div>
           <form
             id="name"
-            onSubmit={this.props.handleSubmit}
+            onSubmit={handleSubmit}
             className={this.hideInput(input)}
           >
             <input
-              value={this.props.fullName}
+              value={name}
               id="fullName"
               type="text"
               onChange={handleChange}
             />
             <input type="submit" value="Submit" />
-            {/* <button>Cancel</button> */}
           </form>
         </div>
         <div>{this.formatPhone(cell)}</div>
@@ -56,10 +63,7 @@ class ContactMe extends React.Component {
     return areaCode.concat("-", three).concat("-", four);
   };
 
-  hideDiv = (props) => {
-    console.log(props);
-    return props ? "hide" : "";
-  };
+  hideDiv = (props) => (props ? "hide" : "");
 
   hideInput = (props) => (props ? "" : "hide");
 }
