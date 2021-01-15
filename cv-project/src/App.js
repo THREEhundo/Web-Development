@@ -22,6 +22,7 @@ class App extends React.Component {
           description: "Bart Simpson's teacher",
         },
       ],
+      workInput: false,
     };
   }
 
@@ -38,14 +39,19 @@ class App extends React.Component {
           toggleInput={this.toggleInput}
           handleSubmit={this.handleSubmit}
         />
-        <WorkExperience workExperience={this.state.workExperience[0]} />
+        <WorkExperience
+          workExperience={this.state.workExperience[0]}
+          handleWorkChange={this.handleWorkChange}
+          toggleInput={this.toggleInput}
+          workInput={this.state.workInput}
+        />
       </div>
     );
   }
 
-  toggleInput = () => {
+  toggleInput = (props) => {
     this.setState({
-      contactInput: !this.state.input,
+      [props]: !this.state.props,
     });
   };
 
@@ -53,6 +59,18 @@ class App extends React.Component {
     const id = e.target.name;
     this.setState({
       [id]: e.target.value,
+    });
+  };
+
+  handleWorkChange = (e) => {
+    const id = e.target.name;
+    console.log(e.target.value);
+    this.setState({
+      workExperience: [
+        {
+          [id]: e.target.value,
+        },
+      ],
     });
   };
 

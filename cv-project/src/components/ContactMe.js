@@ -25,7 +25,7 @@ class ContactMe extends React.Component {
                 className="edit"
                 src={edit}
                 alt="editField"
-                onClick={toggleInput}
+                onClick={() => toggleInput("contactInput")}
               />
             </button>
           </div>
