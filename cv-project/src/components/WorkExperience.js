@@ -8,12 +8,6 @@ class WorkExperience extends React.Component {
 
   render() {
     const { workExperience } = this.props;
-    const aa = Object.entries(workExperience);
-    const aaa = aa.map((info, index) => {
-      console.log(info, index);
-      console.log(info[0]);
-      console.log(info[1]);
-    });
 
     const {
       workInput,
@@ -39,7 +33,7 @@ class WorkExperience extends React.Component {
             />
           </button>
         </div>
-        <form className={this.hideInput(workInput)}>
+        <form className={this.hideInput(workInput)} onSubmit={handleSubmit}>
           {Object.entries(workExperience).map((info, index) => (
             <label key={index}>
               {info[0]}:
@@ -51,6 +45,7 @@ class WorkExperience extends React.Component {
               />
             </label>
           ))}
+          <input type="submit" value="Submit" />
         </form>
       </div>
     );

@@ -44,6 +44,7 @@ class App extends React.Component {
           handleWorkChange={this.handleWorkChange}
           toggleInput={this.toggleInput}
           workInput={this.state.workInput}
+          handleSubmit={this.handleSubmit}
         />
       </div>
     );
@@ -75,8 +76,13 @@ class App extends React.Component {
   };
 
   handleSubmit = (e) => {
+    let input;
+    e.target.id === "contactInfo"
+      ? (input = "contactInput")
+      : (input = "workInput");
+    console.log(input);
     this.setState({
-      contactInput: false,
+      [input]: false,
     });
     e.preventDefault();
   };
