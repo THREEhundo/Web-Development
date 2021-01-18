@@ -7,21 +7,22 @@ class WorkExperience extends React.Component {
   }
 
   render() {
-    const { workExperience } = this.props;
-
     const {
       workInput,
       toggleInput,
       handleWorkChange,
       handleSubmit,
+      workExperience,
     } = this.props;
+
     return (
       <div>
         <div className={this.hideDiv(workInput)}>
           {Object.entries(workExperience).map((info, index) => (
             <div key={index}>
-              <p>{info[0]}</p>
-              <p>{info[1]}</p>
+              <span>{info[0]}</span>
+              <br />
+              <span>{info[1]}</span>
             </div>
           ))}
           <button>

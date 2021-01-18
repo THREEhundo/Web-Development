@@ -3,6 +3,7 @@ import React from "react";
 import Heading from "./components/Heading";
 import ContactMe from "./components/ContactMe";
 import WorkExperience from "./components/WorkExperience";
+import Education from "./components/Education.js";
 
 class App extends React.Component {
   constructor() {
@@ -23,6 +24,22 @@ class App extends React.Component {
         },
       ],
       workInput: false,
+      education: [
+        {
+          school: "Cornell University",
+          city: "Ithica, NY",
+          from: 1978,
+          to: 1982,
+          degree: "Bachelor of Science",
+        },
+        {
+          school: "Yale University",
+          city: "New Haven, CT",
+          from: 1983,
+          to: 1985,
+          degree: "Master of Engineering",
+        },
+      ],
     };
   }
 
@@ -46,6 +63,7 @@ class App extends React.Component {
           workInput={this.state.workInput}
           handleSubmit={this.handleSubmit}
         />
+        <Education />
       </div>
     );
   }
@@ -70,8 +88,6 @@ class App extends React.Component {
       ...workExperience[0],
       [id]: e.target.value,
     };
-    console.log(item);
-    // console.log(item);
     this.setState({ workExperience: [item] });
   };
 
