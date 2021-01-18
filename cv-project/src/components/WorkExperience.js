@@ -38,6 +38,7 @@ class WorkExperience extends React.Component {
             <label key={index}>
               {info[0]}:
               <input
+                value={info[1]}
                 name={info[0]}
                 type="text"
                 key={index}

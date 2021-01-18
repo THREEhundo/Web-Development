@@ -65,14 +65,14 @@ class App extends React.Component {
 
   handleWorkChange = (e) => {
     const id = e.target.name;
-    console.log(e.target.value);
-    this.setState({
-      workExperience: [
-        {
-          [id]: e.target.value,
-        },
-      ],
-    });
+    let workExperience = [...this.state.workExperience];
+    let item = {
+      ...workExperience[0],
+      [id]: e.target.value,
+    };
+    console.log(item);
+    // console.log(item);
+    this.setState({ workExperience: [item] });
   };
 
   handleSubmit = (e) => {
@@ -80,7 +80,6 @@ class App extends React.Component {
     e.target.id === "contactInfo"
       ? (input = "contactInput")
       : (input = "workInput");
-    console.log(input);
     this.setState({
       [input]: false,
     });
