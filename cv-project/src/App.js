@@ -40,6 +40,7 @@ class App extends React.Component {
           degree: "Master of Engineering",
         },
       ],
+      educationInput: false,
     };
   }
 
@@ -63,7 +64,11 @@ class App extends React.Component {
           workInput={this.state.workInput}
           handleSubmit={this.handleSubmit}
         />
-        <Education />
+        <Education
+          education={this.state.education}
+          toggleInput={this.toggleInput}
+          educationInput={this.state.educationInput}
+        />
       </div>
     );
   }
