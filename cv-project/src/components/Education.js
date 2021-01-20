@@ -21,19 +21,23 @@ class Education extends React.Component {
     });
 
     return (
-      <div>
-        <div>{view}</div>
+      <div className={this.hideDiv(educationInput)}>
+        {view}
         <button>
           <img
             className="edit"
             src={edit}
             alt="editEducation"
-            onClick={() => toggleInput(educationInput)}
+            onClick={() => toggleInput("educationInput")}
           />
         </button>
       </div>
     );
   }
+
+  hideDiv = (props) => (props ? "hide" : "");
+
+  hideInput = (props) => (props ? "" : "hide");
 }
 
 export default Education;
