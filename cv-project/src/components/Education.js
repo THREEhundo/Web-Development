@@ -7,7 +7,13 @@ class Education extends React.Component {
   }
 
   render() {
-    const { education, toggleInput, educationInput } = this.props;
+    const {
+      education,
+      toggleInput,
+      educationInput,
+      handleChange,
+      handleSubmit,
+    } = this.props;
 
     const view = education.map((info) => {
       return Object.entries(info).map((item, index) => (
@@ -19,12 +25,14 @@ class Education extends React.Component {
         </div>
       ));
     });
-
+    console.log(education);
     const inputs = education.map((info) => {
       return Object.entries(info).map((item, index) => (
-        <div key={index}>
-          <label>{item[0]}: </label>
-          <input value={item[1]} />
+        <div>
+          <div key={index}>
+            <label>{item[0]}: </label>
+            <input name={item[0]} value={item[1]} onChange={handleChange} />
+          </div>
         </div>
       ));
     });
@@ -42,7 +50,25 @@ class Education extends React.Component {
             />
           </button>
         </div>
-        <form>{inputs}</form>
+        <div className={this.hideDiv(educationInput)}>
+          {view}
+          <button>
+            <img
+              className="edit"
+              src={edit}
+              alt="editEducation"
+              onClick={() => toggleInput("educationInput")}
+            />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          {inputs}
+          {/* <input type="submit" value="Submit" /> */}
+        </form>
+        <form onSubmit={handleSubmit}>
+          {inputs}
+          {/* <input type="submit" value="Submit" /> */}
+        </form>
       </div>
     );
   }

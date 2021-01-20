@@ -68,6 +68,7 @@ class App extends React.Component {
           education={this.state.education}
           toggleInput={this.toggleInput}
           educationInput={this.state.educationInput}
+          handleChange={this.handleEducationChange}
         />
       </div>
     );
@@ -96,11 +97,18 @@ class App extends React.Component {
     this.setState({ workExperience: [item] });
   };
 
+  handleEducationChange = (e) => {
+    const id = e.target.name;
+    let education = [...this.state.education];
+  };
+
   handleSubmit = (e) => {
     let input;
     e.target.id === "contactInfo"
       ? (input = "contactInput")
-      : (input = "workInput");
+      : e.target.id === "workInput"
+      ? (input = "workInput")
+      : (input = "educationInput");
     this.setState({
       [input]: false,
     });
