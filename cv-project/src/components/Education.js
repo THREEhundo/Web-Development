@@ -20,17 +20,29 @@ class Education extends React.Component {
       ));
     });
 
+    const inputs = education.map((info) => {
+      return Object.entries(info).map((item, index) => (
+        <div key={index}>
+          <label>{item[0]}: </label>
+          <input value={item[1]} />
+        </div>
+      ));
+    });
+
     return (
-      <div className={this.hideDiv(educationInput)}>
-        {view}
-        <button>
-          <img
-            className="edit"
-            src={edit}
-            alt="editEducation"
-            onClick={() => toggleInput("educationInput")}
-          />
-        </button>
+      <div>
+        <div className={this.hideDiv(educationInput)}>
+          {view}
+          <button>
+            <img
+              className="edit"
+              src={edit}
+              alt="editEducation"
+              onClick={() => toggleInput("educationInput")}
+            />
+          </button>
+        </div>
+        <form>{inputs}</form>
       </div>
     );
   }
