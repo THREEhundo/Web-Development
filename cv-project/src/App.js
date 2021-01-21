@@ -69,10 +69,19 @@ class App extends React.Component {
           toggleInput={this.toggleInput}
           educationInput={this.state.educationInput}
           handleChange={this.handleEducationChange}
+          handleDelete={this.handleDelete}
         />
       </div>
     );
   }
+
+  handleDelete = (e) => {
+    let index = parseInt(e.target.id);
+
+    this.setState({
+      education: this.state.education.filter((_, i) => i !== index),
+    });
+  };
 
   toggleInput = (props) => {
     this.setState({
@@ -98,8 +107,8 @@ class App extends React.Component {
   };
 
   handleEducationChange = (e) => {
-    const id = e.target.name;
-    let education = [...this.state.education];
+    // const id = e.target.name;
+    // let education = [...this.state.education];
   };
 
   handleSubmit = (e) => {

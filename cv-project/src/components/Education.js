@@ -13,10 +13,12 @@ class Education extends React.Component {
       educationInput,
       handleChange,
       handleSubmit,
+      handleDelete,
     } = this.props;
 
     const view = education.map((info) => {
-      return Object.entries(info).map((item, index) => (
+      let index = education.indexOf(info);
+      const schools = Object.entries(info).map((item, index) => (
         <div key={index}>
           <div>
             <span>{item[0]}: </span>
@@ -24,8 +26,16 @@ class Education extends React.Component {
           </div>
         </div>
       ));
+      return (
+        <div key={index}>
+          {schools}
+          <button id={index} onClick={handleDelete}>
+            Delete
+          </button>
+        </div>
+      );
     });
-    console.log(education);
+
     const inputs = education.map((info) => {
       return Object.entries(info).map((item, index) => (
         <div>
@@ -50,24 +60,9 @@ class Education extends React.Component {
             />
           </button>
         </div>
-        <div className={this.hideDiv(educationInput)}>
-          {view}
-          <button>
-            <img
-              className="edit"
-              src={edit}
-              alt="editEducation"
-              onClick={() => toggleInput("educationInput")}
-            />
-          </button>
-        </div>
         <form onSubmit={handleSubmit}>
           {inputs}
-          {/* <input type="submit" value="Submit" /> */}
-        </form>
-        <form onSubmit={handleSubmit}>
-          {inputs}
-          {/* <input type="submit" value="Submit" /> */}
+          <input type="submit" value="Submit" />
         </form>
       </div>
     );
@@ -76,6 +71,23 @@ class Education extends React.Component {
   hideDiv = (props) => (props ? "hide" : "");
 
   hideInput = (props) => (props ? "" : "hide");
+
+  // removeEducation = (e, props) => {
+  //   const arr = [...props.education];
+  //   const index = arr.indexOf(e.target.value)
+  //   if (index!== -1) {
+  //     const newArr = arr.filter(item, id => )
+  //     this.setState({
+  //       education: arr
+  //     })
+  //   }
+  // }
 }
 
 export default Education;
+
+/*
+create a delete button
+event listener
+delete school info from array
+*/
