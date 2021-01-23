@@ -14,7 +14,7 @@ class Education extends React.Component {
       handleChange,
       handleDelete,
       educationForm,
-      submitEducation,
+      handleSubmit,
     } = this.props;
 
     const view = education.map((info) => {
@@ -38,7 +38,7 @@ class Education extends React.Component {
     });
 
     const EduArr = (
-      <form id="educationInput" onSubmit={submitEducation}>
+      <form id="educationInput" onSubmit={handleSubmit}>
         <div>
           <label id="school">School: </label>
           <input
@@ -83,7 +83,7 @@ class Education extends React.Component {
       <div>
         <div className={this.hideDiv(educationInput)}>
           {view}
-          <button>
+          <button variant="primary">
             <img
               className="edit"
               src={edit}

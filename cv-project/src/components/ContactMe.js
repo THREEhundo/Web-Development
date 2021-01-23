@@ -1,3 +1,4 @@
+import Button from "react-bootstrap/Button";
 import edit from "../edit.png";
 import "./ContactMe.css";
 import React from "react";
@@ -20,14 +21,14 @@ class ContactMe extends React.Component {
         <div>
           <div className={this.hideDiv(contactInput)}>
             {name}
-            <button>
+            <Button variant="primary">
               <img
                 className="edit"
                 src={edit}
                 alt="editField"
                 onClick={() => toggleInput("contactInput")}
               />
-            </button>
+            </Button>
           </div>
           <form
             id="contactInfo"

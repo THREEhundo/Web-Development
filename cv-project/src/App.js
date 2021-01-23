@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 import React from "react";
 import Heading from "./components/Heading";
@@ -78,8 +79,7 @@ class App extends React.Component {
           educationInput={this.state.educationInput}
           handleChange={this.handleEducationChange}
           handleDelete={this.handleDelete}
-          handleSubmit={this.handleSubmit}
-          submitEducation={this.submitEducation}
+          handleSubmit={this.submitEducation}
         />
       </div>
     );
