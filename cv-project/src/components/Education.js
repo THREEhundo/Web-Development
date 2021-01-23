@@ -12,8 +12,9 @@ class Education extends React.Component {
       toggleInput,
       educationInput,
       handleChange,
-      handleSubmit,
       handleDelete,
+      educationForm,
+      submitEducation,
     } = this.props;
 
     const view = education.map((info) => {
@@ -36,16 +37,47 @@ class Education extends React.Component {
       );
     });
 
-    const inputs = education.map((info) => {
-      return Object.entries(info).map((item, index) => (
+    const EduArr = (
+      <form id="educationInput" onSubmit={submitEducation}>
         <div>
-          <div key={index}>
-            <label>{item[0]}: </label>
-            <input name={item[0]} value={item[1]} onChange={handleChange} />
-          </div>
+          <label id="school">School: </label>
+          <input
+            name="school"
+            onChange={handleChange}
+            value={educationForm.school}
+          />
         </div>
-      ));
-    });
+        <div>
+          <label id="city">City: </label>
+          <input
+            name="city"
+            onChange={handleChange}
+            value={educationForm.city}
+          />
+        </div>
+        <div>
+          <label id="from">From: </label>
+          <input
+            name="from"
+            onChange={handleChange}
+            value={educationForm.from}
+          />
+        </div>
+        <div>
+          <label id="to">To: </label>
+          <input name="to" onChange={handleChange} value={educationForm.to} />
+        </div>
+        <div>
+          <label id="degree">Degree: </label>
+          <input
+            name="degree"
+            onChange={handleChange}
+            value={educationForm.degree}
+          />
+        </div>
+        <input type="submit" value="Submit" />
+      </form>
+    );
 
     return (
       <div>
@@ -60,10 +92,7 @@ class Education extends React.Component {
             />
           </button>
         </div>
-        <form onSubmit={handleSubmit}>
-          {inputs}
-          <input type="submit" value="Submit" />
-        </form>
+        <div className={this.hideInput(educationInput)}>{EduArr}</div>
       </div>
     );
   }
@@ -71,23 +100,6 @@ class Education extends React.Component {
   hideDiv = (props) => (props ? "hide" : "");
 
   hideInput = (props) => (props ? "" : "hide");
-
-  // removeEducation = (e, props) => {
-  //   const arr = [...props.education];
-  //   const index = arr.indexOf(e.target.value)
-  //   if (index!== -1) {
-  //     const newArr = arr.filter(item, id => )
-  //     this.setState({
-  //       education: arr
-  //     })
-  //   }
-  // }
 }
 
 export default Education;
-
-/*
-create a delete button
-event listener
-delete school info from array
-*/

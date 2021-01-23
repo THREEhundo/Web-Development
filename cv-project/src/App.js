@@ -40,6 +40,13 @@ class App extends React.Component {
           degree: "Master of Engineering",
         },
       ],
+      educationForm: {
+        school: "",
+        city: "",
+        from: "",
+        to: "",
+        degree: "",
+      },
       educationInput: false,
     };
   }
@@ -66,10 +73,13 @@ class App extends React.Component {
         />
         <Education
           education={this.state.education}
+          educationForm={this.state.educationForm}
           toggleInput={this.toggleInput}
           educationInput={this.state.educationInput}
           handleChange={this.handleEducationChange}
           handleDelete={this.handleDelete}
+          handleSubmit={this.handleSubmit}
+          submitEducation={this.submitEducation}
         />
       </div>
     );
@@ -107,11 +117,32 @@ class App extends React.Component {
   };
 
   handleEducationChange = (e) => {
-    // const id = e.target.name;
-    // let education = [...this.state.education];
+    const { value, name } = e.target;
+    const educationForm = { ...this.state.educationForm };
+    this.setState({
+      educationForm: { ...educationForm, [name]: value },
+    });
+  };
+
+  submitEducation = (e) => {
+    e.preventDefault();
+    const eduForm = this.state.educationForm;
+    const edu = [...this.state.education];
+    this.setState({
+      education: [...edu, eduForm],
+      educationInput: false,
+      educationForm: {
+        school: "",
+        city: "",
+        from: "",
+        to: "",
+        degree: "",
+      },
+    });
   };
 
   handleSubmit = (e) => {
+    e.preventDefault();
     let input;
     e.target.id === "contactInfo"
       ? (input = "contactInput")
@@ -121,7 +152,6 @@ class App extends React.Component {
     this.setState({
       [input]: false,
     });
-    e.preventDefault();
   };
 }
 
