@@ -1,6 +1,10 @@
 import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import edit from "../edit.png";
 import "./ContactMe.css";
+import "../App.css";
 import React from "react";
 
 class ContactMe extends React.Component {
@@ -16,7 +20,7 @@ class ContactMe extends React.Component {
     } = this.props;
 
     return (
-      <div>
+      <Container fluid="xl">
         <h4>Contact Me</h4>
         <div>
           <div className={this.hideDiv(contactInput)}>
@@ -35,36 +39,43 @@ class ContactMe extends React.Component {
             onSubmit={handleSubmit}
             className={this.hideInput(contactInput)}
           >
-            <label>
-              Name:
-              <input
-                value={name}
-                name="fullName"
-                id="fullName"
-                type="text"
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Number:
-              <input
-                type="tel"
-                value={cell}
-                name="cell"
-                id="cell"
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Email
-              <input
-                type="email"
-                value={email}
-                name="email"
-                id="email"
-                onChange={handleChange}
-              />
-            </label>
+            <Row className="justify-content-md-center">
+              <Col>
+                Name:
+                <input
+                  value={name}
+                  name="fullName"
+                  id="fullName"
+                  type="text"
+                  onChange={handleChange}
+                />
+              </Col>
+            </Row>
+            <Row className="justify-content-md-center">
+              <Col>
+                Number:
+                <input
+                  type="tel"
+                  value={cell}
+                  name="cell"
+                  id="cell"
+                  onChange={handleChange}
+                />
+              </Col>
+            </Row>
+            <Row className="justify-content-md-center">
+              <Col>
+                Email
+                <input
+                  type="email"
+                  value={email}
+                  name="email"
+                  id="email"
+                  onChange={handleChange}
+                />
+              </Col>
+            </Row>
+
             <input type="submit" value="Submit" />
           </form>
         </div>
@@ -72,7 +83,7 @@ class ContactMe extends React.Component {
           {this.formatPhone(cell)}
         </div>
         <div className={this.hideDiv(contactInput)}>{email}</div>
-      </div>
+      </Container>
     );
   }
 

@@ -2,3 +2,18 @@
   width: 15px;
   height: 15px;
 }
+
+#fullName {
+  margin-left: 25px;
+  width: 200px;
+}
+
+#cell {
+  margin-left: 9px;
+  width: 200px;
+}
+
+#email {
+  margin-left: 34px;
+  width: 200px;
+}
