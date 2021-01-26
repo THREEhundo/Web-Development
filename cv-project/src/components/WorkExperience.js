@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
 import "../App.css";
 import React from "react";
 
@@ -41,21 +42,22 @@ class WorkExperience extends React.Component {
             </Col>
           </Row>
         </Row>
-        <form className={this.hideInput(workInput)} onSubmit={handleSubmit}>
+        <Form className={this.hideInput(workInput)} onSubmit={handleSubmit}>
           {Object.entries(workExperience).map((info, index) => (
-            <label key={index}>
-              {info[0]}:
-              <input
+            <Form.Group controlId={info[0] + "Form"} key={index}>
+              <Form.Label>{info[0]}:</Form.Label>
+              <Form.Control type="text" placeholder={info[1]} />
+              <Form.Text
                 value={info[1]}
                 name={info[0]}
                 type="text"
                 key={index}
                 onChange={handleWorkChange}
               />
-            </label>
+            </Form.Group>
           ))}
           <input type="submit" value="Submit" />
-        </form>
+        </Form>
       </Container>
     );
   }

@@ -121,6 +121,8 @@ class App extends React.Component {
       ...workExperience[0],
       [id]: value,
     };
+    console.log(id);
+    console.log(value);
     this.setState({ workExperience: [item] });
   };
 
