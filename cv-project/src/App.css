@@ -3,7 +3,7 @@
   height: 15px;
 }
 
-#fullName {
+#fullNameInput {
   margin-left: 25px;
   width: 200px;
 }
@@ -16,4 +16,34 @@
 #email {
   margin-left: 34px;
   width: 200px;
+}
+
+#name {
+  font-size: 2.2em;
+}
+
+#editContactBtn {
+  margin-left: 87px;
+}
+
+.outline {
+  border: 1px black solid;
+  max-width: 600px;
+  min-width: 400px;
+}
+
+#fromView {
+  flex: 0 0 11%;
+  padding-right: 0;
+}
+
+#toView {
+  flex: 0 0 4%;
+  padding-left: 0;
+}
+
+#workInputBtn {
+  margin-left: 300px;
+  position: absolute;
+  bottom: 80px;
 }

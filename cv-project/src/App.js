@@ -16,11 +16,11 @@ class App extends React.Component {
       contactInput: false,
       workExperience: [
         {
+          role: "4th Grade Teacher",
           company: "Springfield Elementary School",
           city: "Springfield, OR",
-          from: 1989,
+          from: 1989 + " -",
           to: "Present",
-          role: "4th Grade Teacher",
           description: "Bart Simpson's teacher",
         },
       ],
@@ -107,11 +107,19 @@ class App extends React.Component {
   };
 
   handleWorkChange = (e) => {
+    const value = e.target.value;
     const id = e.target.name;
+    let item;
     let workExperience = [...this.state.workExperience];
-    let item = {
+    if (id === "from") {
+      item = {
+        ...workExperience[0],
+        [id]: value + " - ",
+      };
+    }
+    item = {
       ...workExperience[0],
-      [id]: e.target.value,
+      [id]: value,
     };
     this.setState({ workExperience: [item] });
   };

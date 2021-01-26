@@ -20,12 +20,12 @@ class ContactMe extends React.Component {
     } = this.props;
 
     return (
-      <Container fluid="xl">
+      <Container className="outline" fluid="sm">
         <h4>Contact Me</h4>
         <div>
-          <div className={this.hideDiv(contactInput)}>
+          <div className={this.hideDiv(contactInput)} id="name">
             {name}
-            <Button variant="primary">
+            <Button id="editContactBtn" variant="outline-dark">
               <img
                 className="edit"
                 src={edit}
@@ -45,7 +45,7 @@ class ContactMe extends React.Component {
                 <input
                   value={name}
                   name="fullName"
-                  id="fullName"
+                  id="fullNameInput"
                   type="text"
                   onChange={handleChange}
                 />
@@ -80,9 +80,10 @@ class ContactMe extends React.Component {
           </form>
         </div>
         <div className={this.hideDiv(contactInput)}>
+          📱
           {this.formatPhone(cell)}
         </div>
-        <div className={this.hideDiv(contactInput)}>{email}</div>
+        <div className={this.hideDiv(contactInput)}>📧 {email}</div>
       </Container>
     );
   }

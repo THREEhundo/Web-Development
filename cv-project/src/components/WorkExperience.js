@@ -1,4 +1,9 @@
 import edit from "../edit.png";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import "../App.css";
 import React from "react";
 
 class WorkExperience extends React.Component {
@@ -16,24 +21,26 @@ class WorkExperience extends React.Component {
     } = this.props;
 
     return (
-      <div>
-        <div className={this.hideDiv(workInput)}>
+      <Container className="outline" fluid="sm">
+        <Row xs={1} className={this.hideDiv(workInput)}>
           {Object.entries(workExperience).map((info, index) => (
-            <div key={index}>
-              <span>{info[0]}</span>
-              <br />
+            <Col key={index} id={info[0] + "View"}>
               <span>{info[1]}</span>
-            </div>
+            </Col>
           ))}
-          <button>
-            <img
-              className="edit"
-              src={edit}
-              alt="editCareer"
-              onClick={() => toggleInput("workInput")}
-            />
-          </button>
-        </div>
+          <Row>
+            <Col>
+              <Button id="workInputBtn" variant="outline-dark">
+                <img
+                  className="edit"
+                  src={edit}
+                  alt="editCareer"
+                  onClick={() => toggleInput("workInput")}
+                />
+              </Button>
+            </Col>
+          </Row>
+        </Row>
         <form className={this.hideInput(workInput)} onSubmit={handleSubmit}>
           {Object.entries(workExperience).map((info, index) => (
             <label key={index}>
@@ -49,13 +56,21 @@ class WorkExperience extends React.Component {
           ))}
           <input type="submit" value="Submit" />
         </form>
-      </div>
+      </Container>
     );
   }
 
   hideDiv = (props) => (props ? "hide" : "");
 
   hideInput = (props) => (props ? "" : "hide");
+
+  insertDash = () => {
+    const date = document.querySelector("#fromView");
+    const dash = document.createElement("span");
+    dash.innerHTML = "-";
+    date.appendChild(dash);
+    console.log(dash);
+  };
 }
 
 export default WorkExperience;
