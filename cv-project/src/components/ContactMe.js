@@ -2,6 +2,7 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
 import edit from "../edit.png";
 import "./ContactMe.css";
 import "../App.css";
@@ -34,50 +35,52 @@ class ContactMe extends React.Component {
               />
             </Button>
           </div>
-          <form
-            id="contactInfo"
+          <Form
+            id="contactForm"
             onSubmit={handleSubmit}
             className={this.hideInput(contactInput)}
           >
-            <Row className="justify-content-md-center">
-              <Col>
-                Name:
-                <input
-                  value={name}
-                  name="fullName"
-                  id="fullNameInput"
-                  type="text"
-                  onChange={handleChange}
-                />
-              </Col>
-            </Row>
-            <Row className="justify-content-md-center">
-              <Col>
-                Number:
-                <input
-                  type="tel"
-                  value={cell}
-                  name="cell"
-                  id="cell"
-                  onChange={handleChange}
-                />
-              </Col>
-            </Row>
-            <Row className="justify-content-md-center">
-              <Col>
-                Email
-                <input
-                  type="email"
-                  value={email}
-                  name="email"
-                  id="email"
-                  onChange={handleChange}
-                />
-              </Col>
-            </Row>
+            <Form.Group className="">
+              <Form.Label>Name:</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={name}
+                onChange={handleChange}
+                value={name}
+                name="fullName"
+                id="fullNameInput"
+              />
+              <Form.Text />
+            </Form.Group>
+            <Form.Group className="">
+              <Form.Label>Number:</Form.Label>
+              <Form.Control
+                type="tel"
+                placeholder={cell}
+                value={cell}
+                onChange={handleChange}
+                name="cell"
+                id="cell"
+              />
+              <Form.Text />
+            </Form.Group>
+            <Form.Group className="">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder={email}
+                value={email}
+                name="email"
+                id="email"
+                onChange={handleChange}
+              />
+              <Form.Text />
+            </Form.Group>
 
-            <input type="submit" value="Submit" />
-          </form>
+            <Button type="submit" value="Submit" variant="outline-success">
+              ✅
+            </Button>
+          </Form>
         </div>
         <div className={this.hideDiv(contactInput)}>
           📱

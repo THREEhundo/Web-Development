@@ -46,17 +46,20 @@ class WorkExperience extends React.Component {
           {Object.entries(workExperience).map((info, index) => (
             <Form.Group controlId={info[0] + "Form"} key={index}>
               <Form.Label>{info[0]}:</Form.Label>
-              <Form.Control type="text" placeholder={info[1]} />
-              <Form.Text
+              <Form.Control
+                type="text"
+                placeholder={info[1]}
                 value={info[1]}
                 name={info[0]}
-                type="text"
                 key={index}
                 onChange={handleWorkChange}
               />
+              <Form.Text />
             </Form.Group>
           ))}
-          <input type="submit" value="Submit" />
+          <Button type="submit" value="Submit" variant="outline-success">
+            ✅
+          </Button>
         </Form>
       </Container>
     );

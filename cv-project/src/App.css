@@ -6,21 +6,6 @@ label {
   height: 15px;
 }
 
-#fullNameInput {
-  margin-left: 25px;
-  width: 200px;
-}
-
-#cell {
-  margin-left: 9px;
-  width: 200px;
-}
-
-#email {
-  margin-left: 34px;
-  width: 200px;
-}
-
 #name {
   font-size: 2.2em;
 }

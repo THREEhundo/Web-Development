@@ -154,7 +154,7 @@ class App extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     let input;
-    e.target.id === "contactInfo"
+    e.target.id === "contactForm"
       ? (input = "contactInput")
       : e.target.id === "workInput"
       ? (input = "workInput")
