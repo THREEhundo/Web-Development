@@ -42,7 +42,11 @@ class WorkExperience extends React.Component {
             </Col>
           </Row>
         </Row>
-        <Form className={this.hideInput(workInput)} onSubmit={handleSubmit}>
+        <Form
+          id="workForm"
+          className={this.hideForm(workInput)}
+          onSubmit={handleSubmit}
+        >
           {Object.entries(workExperience).map((info, index) => (
             <Form.Group controlId={info[0] + "Form"} key={index}>
               <Form.Label>{info[0]}:</Form.Label>
@@ -67,7 +71,7 @@ class WorkExperience extends React.Component {
 
   hideDiv = (props) => (props ? "hide" : "");
 
-  hideInput = (props) => (props ? "" : "hide");
+  hideForm = (props) => (props ? "" : "hide");
 
   insertDash = () => {
     const date = document.querySelector("#fromView");

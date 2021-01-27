@@ -156,7 +156,7 @@ class App extends React.Component {
     let input;
     e.target.id === "contactForm"
       ? (input = "contactInput")
-      : e.target.id === "workInput"
+      : e.target.id === "workForm"
       ? (input = "workInput")
       : (input = "educationInput");
     this.setState({
