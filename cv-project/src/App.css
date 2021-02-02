@@ -1,6 +1,35 @@
 label {
   text-transform: capitalize;
 }
+
+span {
+  text-transform: capitalize;
+}
+
+#headingContainer {
+  text-align: center;
+}
+
+#appContainer {
+  background: linear-gradient(to right, #743ad5, #d53a9d);
+  padding: 7px;
+  background-clip: padding-box;
+  max-width: 600px;
+  min-width: 400px;
+}
+
+.offSetTop {
+  padding-top: 1rem;
+}
+
+.offSetBtm {
+  padding-bottom: 1rem;
+}
+
+.module {
+  background: white;
+}
+
 .edit-btn {
   width: 15px;
   height: 15px;
@@ -11,13 +40,18 @@ label {
 }
 
 #editContactBtn {
-  margin-left: 87px;
+  margin-left: 85px;
 }
 
 .outline {
-  border: 1px black solid;
+  padding-bottom: 10px;
+  padding-top: 7px;
   max-width: 600px;
   min-width: 400px;
+  background: linear-gradient(to right, #743ad5, #d53a9d);
+  background-size: 100% 2px;
+  background-position: bottom 0 left 0, bottom 5px left 0;
+  background-repeat: no-repeat;
 }
 
 #fromView {
@@ -36,9 +70,34 @@ label {
   bottom: 80px;
 }
 
-#fromForm {
-  width: 25%;
-}
+#fromForm,
 #toForm {
   width: 25%;
+}
+
+#educationContainer {
+  padding: 0;
+}
+
+#educationForm {
+  padding-bottom: 10px;
+  padding-top: 7px;
+}
+
+.form-group,
+.form-row > .col,
+.form-row > [class*="col-"] {
+  padding-left: 0;
+  padding-right: 0;
+}
+.form-row {
+  margin: 0;
+}
+
+.schoolBtn {
+  padding-right: 1rem;
+}
+
+#addSchoolBtn {
+  margin: 5px 15px;
 }

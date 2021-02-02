@@ -31,7 +31,7 @@ class WorkExperience extends React.Component {
           ))}
           <Row>
             <Col>
-              <Button id="workInputBtn" variant="outline-dark">
+              <Button id="workInputBtn" variant="outline-success">
                 <img
                   className="edit"
                   src={edit}

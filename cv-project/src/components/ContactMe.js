@@ -1,7 +1,5 @@
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import edit from "../edit.png";
 import "./ContactMe.css";
@@ -21,12 +19,12 @@ class ContactMe extends React.Component {
     } = this.props;
 
     return (
-      <Container className="outline" fluid="sm">
+      <Container className="outline offSetTop" fluid="sm">
         <h4>Contact Me</h4>
         <div>
           <div className={this.hideDiv(contactInput)} id="name">
             {name}
-            <Button id="editContactBtn" variant="outline-dark">
+            <Button id="editContactBtn" variant="outline-success">
               <img
                 className="edit"
                 src={edit}

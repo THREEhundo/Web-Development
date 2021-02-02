@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 import React from "react";
+import Container from "react-bootstrap/Container";
 import Heading from "./components/Heading";
 import ContactMe from "./components/ContactMe";
 import WorkExperience from "./components/WorkExperience";
@@ -56,31 +57,36 @@ class App extends React.Component {
     return (
       <div>
         <Heading />
-        <ContactMe
-          name={this.state.fullName}
-          cell={this.state.cell}
-          email={this.state.email}
-          contactInput={this.state.contactInput}
-          handleChange={this.handleChange}
-          toggleInput={this.toggleInput}
-          handleSubmit={this.handleSubmit}
-        />
-        <WorkExperience
-          workExperience={this.state.workExperience[0]}
-          handleWorkChange={this.handleWorkChange}
-          toggleInput={this.toggleInput}
-          workInput={this.state.workInput}
-          handleSubmit={this.handleSubmit}
-        />
-        <Education
-          education={this.state.education}
-          educationForm={this.state.educationForm}
-          toggleInput={this.toggleInput}
-          educationInput={this.state.educationInput}
-          handleChange={this.handleEducationChange}
-          handleDelete={this.handleDelete}
-          handleSubmit={this.submitEducation}
-        />
+        <Container id="appContainer" fluid="sm">
+          <div className="module">
+            <ContactMe
+              name={this.state.fullName}
+              cell={this.state.cell}
+              email={this.state.email}
+              contactInput={this.state.contactInput}
+              handleChange={this.handleChange}
+              toggleInput={this.toggleInput}
+              handleSubmit={this.handleSubmit}
+            />
+            <WorkExperience
+              workExperience={this.state.workExperience[0]}
+              handleWorkChange={this.handleWorkChange}
+              toggleInput={this.toggleInput}
+              workInput={this.state.workInput}
+              handleSubmit={this.handleSubmit}
+            />
+            <Education
+              education={this.state.education}
+              educationForm={this.state.educationForm}
+              toggleInput={this.toggleInput}
+              educationInput={this.state.educationInput}
+              handleChange={this.handleEducationChange}
+              handleDelete={this.handleDelete}
+              handleSubmit={this.submitEducation}
+              className="offSetBtm"
+            />
+          </div>
+        </Container>
       </div>
     );
   }

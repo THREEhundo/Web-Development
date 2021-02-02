@@ -1,4 +1,8 @@
-import edit from "../edit.png";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+// import Row from "react-bootstrap/Row";
+// import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
 import React from "react";
 
 class Education extends React.Component {
@@ -28,72 +32,92 @@ class Education extends React.Component {
         </div>
       ));
       return (
-        <div key={index}>
+        <Container className="outline" fluid="sm" key={index}>
           {schools}
-          <button id={index} onClick={handleDelete}>
-            Delete
-          </button>
-        </div>
+          <Button
+            className="schoolBtn"
+            id={index}
+            onClick={handleDelete}
+            variant="outline-warning"
+          >
+            ❌
+          </Button>
+        </Container>
       );
     });
 
     const EduArr = (
-      <form id="educationInput" onSubmit={handleSubmit}>
-        <div>
-          <label id="school">School: </label>
-          <input
+      <Form id="educationInput" onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label id="school">School: </Form.Label>
+          <Form.Control
             name="school"
             onChange={handleChange}
             value={educationForm.school}
           />
-        </div>
-        <div>
-          <label id="city">City: </label>
-          <input
+          <Form.Text />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label id="city">City: </Form.Label>
+          <Form.Control
             name="city"
             onChange={handleChange}
             value={educationForm.city}
           />
-        </div>
-        <div>
-          <label id="from">From: </label>
-          <input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label id="from">From: </Form.Label>
+          <Form.Control
             name="from"
             onChange={handleChange}
             value={educationForm.from}
           />
-        </div>
-        <div>
-          <label id="to">To: </label>
-          <input name="to" onChange={handleChange} value={educationForm.to} />
-        </div>
-        <div>
-          <label id="degree">Degree: </label>
-          <input
+          <Form.Text />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label id="to">To: </Form.Label>
+          <Form.Control
+            name="to"
+            onChange={handleChange}
+            value={educationForm.to}
+          />
+          <Form.Text />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label id="degree">Degree: </Form.Label>
+          <Form.Control
             name="degree"
             onChange={handleChange}
             value={educationForm.degree}
           />
-        </div>
-        <input type="submit" value="Submit" />
-      </form>
+          <Form.Text />
+        </Form.Group>
+        <Button type="submit" value="Submit" variant="outline-success">
+          ✅
+        </Button>
+      </Form>
     );
 
     return (
-      <div>
+      <Container id="educationContainer" className="offSetBtm">
         <div className={this.hideDiv(educationInput)}>
           {view}
-          <button variant="primary">
-            <img
-              className="edit"
-              src={edit}
-              alt="editEducation"
-              onClick={() => toggleInput("educationInput")}
-            />
-          </button>
+          <Button
+            className="schoolBtn"
+            id="addSchoolBtn"
+            variant="outline-success"
+            onClick={() => toggleInput("educationInput")}
+          >
+            ➕
+          </Button>
         </div>
-        <div className={this.hideInput(educationInput)}>{EduArr}</div>
-      </div>
+        <Container
+          id="educationForm"
+          className={this.hideInput(educationInput)}
+        >
+          {EduArr}
+        </Container>
+      </Container>
     );
   }
 
