@@ -35,11 +35,21 @@ class Counter extends React.Component {
       this.props.ignoreProp !== nextProps.ignoreProp
     ) {
       console.log("Should Component Update - DO NOT RENDER");
+      console.log("-------------------");
+
       return false;
     }
     console.log("Should Component Update - RENDER");
+    console.log("-------------------");
 
     return true;
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log("Get Snapshot Before Update");
+    console.log("-------------------");
+
+    return null;
   }
 
   render() {
@@ -60,6 +70,11 @@ class Counter extends React.Component {
 
   componentWillUnmount() {
     console.log("Component Will Unmount");
+    console.log("-------------------");
+  }
+
+  componentDidCatch(error, info) {
+    console.log("Component Did Catch");
     console.log("-------------------");
   }
 }
