@@ -30,6 +30,7 @@ class Counter extends React.Component {
 
   componentDidMount() {
     // This is where you fetch data when initializing ie. network request & show spinner while loading content
+    // You can call setState here but does not render twice because of it's location
     console.log("Component Did Mount");
     console.log("-------------------");
     setTimeout(() => {
@@ -38,6 +39,7 @@ class Counter extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    // Figure out if render needs to run again because it can be expensive to run when there is nothing to change.
     if (
       nextProps.ignoreProp &&
       this.props.ignoreProp !== nextProps.ignoreProp
@@ -54,6 +56,7 @@ class Counter extends React.Component {
   }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
+    // Store position of ListView or any DOM Component which you can pass to componentDidUpdate and reassign after the render
     console.log("Get Snapshot Before Update");
     console.log("-------------------");
 
@@ -84,16 +87,19 @@ class Counter extends React.Component {
   }
 
   componentDidUpdate(prevPros, prevState, snapshot) {
+    // Same as componentDidMount, if you want to make component requests you can do that here
     console.log("Component Did Update");
     console.log("-------------------");
   }
 
   componentWillUnmount() {
+    // Used when removing component from the DOM
     console.log("Component Will Unmount");
     console.log("-------------------");
   }
 
   componentDidCatch(error, info) {
+    // Helps catch any errors and prevents a blank screen and shows the error
     console.log("Component Did Catch");
     console.log("-------------------");
 
