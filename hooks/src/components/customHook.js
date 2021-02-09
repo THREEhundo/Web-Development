@@ -101,5 +101,56 @@ This lets us know whether the currently selected friend is online. If we pick a 
 /*
 useYourImagination()
 
+Custom Hooks offer the flexibility of sharing logic that wasn't possible in React components before.
 
+For example, maybe you have a complex component that contains a lot of local state that is managed in an ad-hoc way. useState doesn't make centralizing the update logic any easier so you might prefer to write it as a Redux reducer:
+*/
+
+function todosReducer(state, action) {
+  switch (action.type) {
+    case "add":
+      return [
+        ...state,
+        {
+          text: action.text,
+          completed: false,
+        },
+      ];
+    // ... other actions ...
+    default:
+      return state;
+  }
+}
+/*
+Reducers are very convenient to test in isolation, and scale to express complex update logic. You can further break them apart into smaller reducers if necessary.
+
+We can manage the local state of our component with a reducer.
+*/
+
+function useReducer(reducer, initialState) {
+  const [state, setState] = useState(initialState);
+
+  function dispatch(action) {
+    const nextState = reducer(state, action);
+    setState(nextState);
+  }
+
+  return [state, dispatch];
+}
+
+/*
+Now we can use it in our component, and let the reducer drive its state management
+*/
+
+function Todos() {
+  const [todos, dispatch] = useReducer(todosReducer, []);
+
+  function handleAddClick(text) {
+    dispatch({ type: "add", text });
+  }
+  // ...
+}
+
+/*
+The need to manage local state with a reducer in a complex component is common enough that we've built the useReducer Hook right into React. You'll find it together with other built-in Hooks in the Hooks API
 */
