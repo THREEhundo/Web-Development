@@ -154,3 +154,55 @@ function Todos() {
 /*
 The need to manage local state with a reducer in a complex component is common enough that we've built the useReducer Hook right into React. You'll find it together with other built-in Hooks in the Hooks API
 */
+
+/*
+useReducer
+*/
+
+const [state, dispatch] = useReducer(reducer, initialArg, init);
+
+/*
+An alternative to useState. Accepts a reducer of type (state, action) => newState, and returns the current state paired with a dispatch method.
+
+useReducer is usually preferable to useState when you have complex state logic that involves multiple sub-values or when the next state depends on teh previous one. useReducer also lets you optimize performance for components that trigger deep updates because you can pass dispatch down instead of callbacks.
+
+Ex.
+*/
+
+const initialState = { count: 0 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    case "decrement":
+      return { count: state.count - 1 };
+    default:
+      throw new Error();
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+      <button onClick={() => dispatch({ type: "increment" })}>+</button>
+    </>
+  );
+}
+
+/*
+NOTE
+REACT guarantees that dispatch function identity is stable and won't change on re-renders. This is why it's it's safe to omit from the useEffect or useCallback dependency list.
+*/
+/*
+SPECIFYING THE INITIAL STATE
+There are two ways to initialize useReducer state. The simplest way is to pass the initial state as a second argument:
+*/
+const [state, dispatch] = useReducer(reducer, { count: initialCount });
+/*
+NOTE
+React doesn't use the state = initialState argument convention popularized by Redux. The initial value sometimes needs to depend on props and so is specified from the Hook call instead.
+*/
