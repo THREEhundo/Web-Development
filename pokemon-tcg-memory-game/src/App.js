@@ -1,40 +1,33 @@
 import logo from "./logo.svg";
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+// grab image, name
+// create function that grabs random cards from array
+// after 10 correct clicks -> show new set
+// show & update score
+// save new high score
+// cards cannot be repeated
+
+//
 
 const App = (props) => {
-  // const POKEMON_URL = "https://api.pokemontcg.io/v2/cards"
-  // const pokemonAPI = d047a3ba-5c74-4582-b1f1-6f96057d5b48
-  // loadJSON("https://api.pokemontcg.io/v2/cards/d047a3ba-5c74-4582-b1f1-6f96057d5b48")
+  const [pokemonCard, setPokemonCard] = useState("");
 
-  // fetch("https://api.pokemontcg.io/v2/cards", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json"
-  //   },
-  //   body: JSON.stringify({})
-  // })
+  useEffect(() => {
+    fetch(
+      "https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:[1 TO 151]"
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((pokeTCG) => {
+        const { data } = pokeTCG;
+        setPokemonCard(data[0].images.small);
+      });
+  });
 
-  // fetch("https://api.pokemontcg.io/v2/sets?q=series:Base")
-  //   .then((res) => {
-  //     return res.json();
-  //   })
-  //   .then((pokeTCG) => {
-  //     const { data } = pokeTCG;
-  //     console.log(pokeTCG);
-  //   });
-
-  // nationalPokedexNumbers:[1 TO 151]
-
-  fetch(
-    "https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:[1 TO 151]"
-  )
-    .then((res) => {
-      return res.json();
-    })
-    .then((pokeTCG) => {
-      console.log(pokeTCG);
-    });
+  console.log(pokemonCard);
 
   return (
     <div className="App">
@@ -52,7 +45,7 @@ const App = (props) => {
           Learn React
         </a>
       </header>
-      {/* <div>{pokemon}</div> */}
+      <img id="poke1" src={pokemonCard} alt="pokemonCard"></img>
     </div>
   );
 };
