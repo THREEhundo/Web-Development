@@ -23,25 +23,48 @@ const App = (props) => {
     };
   };
 
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     await fetch(
+  //       "https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:[1 TO 10]"
+  //     )
+  //       .then((res) => {
+  //         return res.json();
+  //       })
+  //       .then((pokeTCG) => {
+  //         const { data } = pokeTCG;
+  //
+  //         console.log(data);
+  //
+  //         // data.forEach(function (pokemon) {
+  //         //   setPokemonArr(pushPokemon(pokemon));
+  //         // });
+  //       });
+  //   }
+  //   // fetchData();
+  // }, [pokemonArr]);
+
   useEffect(() => {
-    async function fetchData() {
-      await fetch(
-        "https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:[1 TO 151]"
-      )
-        .then((res) => {
-          return res.json();
-        })
-        .then((pokeTCG) => {
-          const { data } = pokeTCG;
-          // setPokemonCard(data[0].images.small);
-          data.forEach(function (pokemon) {
-            setPokemonArr(pushPokemon(pokemon));
-          });
-        });
-    }
-    fetchData();
-  }, [pokemonArr]);
-  console.log(pokemonArr);
+    fetch(
+      "https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:[1%20TO%20151]&pageSize=20&series:base1"
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((pokeTCG) => {
+        const { data } = pokeTCG;
+
+        return console.log(data);
+
+        // data.forEach(function (pokemon) {
+        //   setPokemonArr(pushPokemon(pokemon));
+        // });
+      })
+      .catch((error) => {
+        console.log("Error Code: ", error.code);
+        console.log("Error: ", error);
+      });
+  });
 
   return (
     <div className="App">
