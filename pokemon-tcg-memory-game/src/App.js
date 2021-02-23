@@ -12,22 +12,36 @@ import React, { useState, useEffect } from "react";
 //
 
 const App = (props) => {
-  const [pokemonCard, setPokemonCard] = useState("");
+  // const [pokemonCard, setPokemonCard] = useState("");
+  const [pokemonArr, setPokemonArr] = useState([]);
+
+  const pushPokemon = function (pokemon) {
+    return {
+      id: pokemon.id,
+      name: pokemon.name,
+      img: pokemon.images.small,
+    };
+  };
 
   useEffect(() => {
-    fetch(
-      "https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:[1 TO 151]"
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then((pokeTCG) => {
-        const { data } = pokeTCG;
-        setPokemonCard(data[0].images.small);
-      });
-  });
-
-  console.log(pokemonCard);
+    async function fetchData() {
+      await fetch(
+        "https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:[1 TO 151]"
+      )
+        .then((res) => {
+          return res.json();
+        })
+        .then((pokeTCG) => {
+          const { data } = pokeTCG;
+          // setPokemonCard(data[0].images.small);
+          data.forEach(function (pokemon) {
+            setPokemonArr(pushPokemon(pokemon));
+          });
+        });
+    }
+    fetchData();
+  }, [pokemonArr]);
+  console.log(pokemonArr);
 
   return (
     <div className="App">
@@ -45,7 +59,7 @@ const App = (props) => {
           Learn React
         </a>
       </header>
-      <img id="poke1" src={pokemonCard} alt="pokemonCard"></img>
+      <img id="poke1" alt="pokemonCard"></img>
     </div>
   );
 };
