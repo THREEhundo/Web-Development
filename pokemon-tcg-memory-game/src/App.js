@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import React, { useState, useEffect } from "react";
 
@@ -10,6 +9,7 @@ import React, { useState, useEffect } from "react";
 // cards cannot be repeated
 
 const App = (props) => {
+  let pickedCards = [];
   const [pokedex, setPokedex] = useState(null);
 
   useEffect(() => {
@@ -23,7 +23,6 @@ const App = (props) => {
         })
         .then((pokeTCG) => {
           const { data } = pokeTCG;
-          console.log(data);
           const cards = data.map((pokemon) => {
             const card = {
               id: pokemon.id,
@@ -42,14 +41,34 @@ const App = (props) => {
     fetchData();
   }, []);
 
+  const pokedexCopy = pokedex;
+
+  function splitAndShuffle(array) {
+    let splitArr;
+    if (pokedex !== null) {
+      const shuffled = array.sort(() => 0.5 - Math.random());
+      const first = shuffled.slice(0, 5);
+      const second = shuffled.slice(5, 10);
+      const third = shuffled.slice(10, 15);
+      const fourth = shuffled.slice(15, 19);
+      splitArr = [first, second, third, fourth];
+    }
+    console.log(splitArr);
+    return splitArr;
+  }
+
+  splitAndShuffle(pokedexCopy);
+
   const pokeView =
     pokedex !== null ? (
-      pokedex.map((pokemon) => (
-        <li key={pokemon.id} id={pokemon.name}>
-          <img src={pokemon.img} alt="card"></img>
-          <h1>{pokemon.name}</h1>
-        </li>
-      ))
+      splitAndShuffle(pokedexCopy).map((pokemonGroup) => {
+        return pokemonGroup.map((pokemon) => (
+          <li key={pokemon.id} id={pokemon.id}>
+            <h3>{pokemon.name}</h3>
+            <img src={pokemon.img} alt="card"></img>
+          </li>
+        ));
+      })
     ) : (
       <div>...Loading</div>
     );
