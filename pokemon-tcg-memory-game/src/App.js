@@ -9,80 +9,54 @@ import React, { useState, useEffect } from "react";
 // save new high score
 // cards cannot be repeated
 
-//
-
 const App = (props) => {
-  // const [pokemonCard, setPokemonCard] = useState("");
-  const [pokemonArr, setPokemonArr] = useState([]);
-
-  const pushPokemon = function (pokemon) {
-    return {
-      id: pokemon.id,
-      name: pokemon.name,
-      img: pokemon.images.small,
-    };
-  };
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     await fetch(
-  //       "https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:[1 TO 10]"
-  //     )
-  //       .then((res) => {
-  //         return res.json();
-  //       })
-  //       .then((pokeTCG) => {
-  //         const { data } = pokeTCG;
-  //
-  //         console.log(data);
-  //
-  //         // data.forEach(function (pokemon) {
-  //         //   setPokemonArr(pushPokemon(pokemon));
-  //         // });
-  //       });
-  //   }
-  //   // fetchData();
-  // }, [pokemonArr]);
+  const [pokedex, setPokedex] = useState(null);
 
   useEffect(() => {
-    fetch(
-      "https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:[1%20TO%20151]&pageSize=20&series:base1"
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then((pokeTCG) => {
-        const { data } = pokeTCG;
+    async function fetchData() {
+      const url =
+        "https://api.pokemontcg.io/v2/cards?q=set.series:base&nationalPokedexNumbers:[1%20TO%20151]&pageSize=20";
 
-        return console.log(data);
+      await fetch(url)
+        .then((res) => {
+          return res.json();
+        })
+        .then((pokeTCG) => {
+          const { data } = pokeTCG;
+          console.log(data);
+          const cards = data.map((pokemon) => {
+            const card = {
+              id: pokemon.id,
+              name: pokemon.name,
+              img: pokemon.images.small,
+            };
+            return card;
+          });
+          setPokedex(cards);
+        })
+        .catch((error) => {
+          console.log("Error: ", error);
+        });
+    }
 
-        // data.forEach(function (pokemon) {
-        //   setPokemonArr(pushPokemon(pokemon));
-        // });
-      })
-      .catch((error) => {
-        console.log("Error Code: ", error.code);
-        console.log("Error: ", error);
-      });
-  });
+    fetchData();
+  }, []);
+
+  const pokeView =
+    pokedex !== null ? (
+      pokedex.map((pokemon) => (
+        <li key={pokemon.id} id={pokemon.name}>
+          <img src={pokemon.img} alt="card"></img>
+          <h1>{pokemon.name}</h1>
+        </li>
+      ))
+    ) : (
+      <div>...Loading</div>
+    );
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <img id="poke1" alt="pokemonCard"></img>
+      <ul>{pokeView}</ul>
     </div>
   );
 };
