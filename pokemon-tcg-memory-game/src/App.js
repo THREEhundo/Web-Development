@@ -9,7 +9,6 @@ import React, { useState, useEffect } from "react";
 // cards cannot be repeated
 
 const App = (props) => {
-  let pickedCards = [];
   const [pokedex, setPokedex] = useState(null);
 
   useEffect(() => {
@@ -43,7 +42,7 @@ const App = (props) => {
 
   const pokedexCopy = pokedex;
 
-  function splitAndShuffle(array) {
+  function shuffleSplit(array) {
     let splitArr;
     if (pokedex !== null) {
       const shuffled = array.sort(() => 0.5 - Math.random());
@@ -53,22 +52,21 @@ const App = (props) => {
       const fourth = shuffled.slice(15, 19);
       splitArr = [first, second, third, fourth];
     }
-    console.log(splitArr);
     return splitArr;
   }
 
-  splitAndShuffle(pokedexCopy);
+  const sets = shuffleSplit(pokedexCopy);
+  const split1 = sets[0];
+  console.log(split1);
 
   const pokeView =
     pokedex !== null ? (
-      splitAndShuffle(pokedexCopy).map((pokemonGroup) => {
-        return pokemonGroup.map((pokemon) => (
-          <li key={pokemon.id} id={pokemon.id}>
-            <h3>{pokemon.name}</h3>
-            <img src={pokemon.img} alt="card"></img>
-          </li>
-        ));
-      })
+      split1.map((pokemon) => (
+        <li key={pokemon.id} id={pokemon.id}>
+          <h3>{pokemon.name}</h3>
+          <img src={pokemon.img} alt="card"></img>
+        </li>
+      ))
     ) : (
       <div>...Loading</div>
     );
