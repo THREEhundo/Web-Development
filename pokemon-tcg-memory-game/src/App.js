@@ -1,15 +1,38 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import Header from "./components/Header";
 
+/*
 // grab image, name
 // create function that grabs random cards from array
+// Set banner
+
+*/
 // after 10 correct clicks -> show new set
 // show & update score
 // save new high score
 // cards cannot be repeated
-
+// https://api.pokemontcg.io/v2/sets?q=id:base1&images.symbol
 const App = (props) => {
   const [pokedex, setPokedex] = useState(null);
+  const [headerImg, setHeaderImg] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      const url = "https://api.pokemontcg.io/v2/sets?q=id:base1&images.symbol";
+
+      await fetch(url)
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          const { symbol } = data.data[0].images;
+          setHeaderImg(symbol);
+        });
+    }
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -40,8 +63,6 @@ const App = (props) => {
     fetchData();
   }, []);
 
-  const pokedexCopy = pokedex;
-
   function shuffleSplit(array) {
     let splitArr;
     if (pokedex !== null) {
@@ -54,10 +75,12 @@ const App = (props) => {
     }
     return splitArr;
   }
-
-  const sets = shuffleSplit(pokedexCopy);
-  const split1 = sets[0];
-  console.log(split1);
+  let split1;
+  if (pokedex !== null) {
+    const pokedexCopy = pokedex;
+    const sets = shuffleSplit(pokedexCopy);
+    split1 = sets[0];
+  }
 
   const pokeView =
     pokedex !== null ? (
@@ -71,8 +94,11 @@ const App = (props) => {
       <div>...Loading</div>
     );
 
+  const banner = headerImg !== null ? { headerImg } : <div>Pokemon TCG</div>;
+
   return (
     <div className="App">
+      <Header banner={banner} />
       <ul>{pokeView}</ul>
     </div>
   );
