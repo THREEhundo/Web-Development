@@ -58,6 +58,16 @@ const App = (props) => {
       });
     }
 
+    function shuffleSplit(array) {
+      const first = array.slice(0, 5);
+      const second = array.slice(5, 10);
+      const third = array.slice(10, 15);
+      const fourth = array.slice(15, 20);
+
+      const splitArr = [first, second, third, fourth];
+      return splitArr;
+    }
+
     async function fetchData() {
       try {
         const url =
@@ -66,7 +76,13 @@ const App = (props) => {
         const fetched = await fetch(url);
         const res = await fetched.json();
         const parsed = parseData(res);
-        setPokedex(parsed);
+        const shuffled = parsed.sort(() => 0.5 - Math.random());
+        setPokedex(shuffled);
+        const split = shuffleSplit(shuffled);
+        setFirstGroup(split[0]);
+        setSecondGroup(split[1]);
+        setThirdGroup(split[2]);
+        setFourthGroup(split[3]);
       } catch (error) {
         console.log("Error: ", error);
       }
@@ -74,49 +90,9 @@ const App = (props) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    // let splitArr, shuffled;
-    function shuffleSplit(array) {
-      // if (pokedex !== null) {
-      const arrayCopy = Array.from(array);
-      const shuffled = arrayCopy.sort(() => 0.5 - Math.random());
-
-      const first = shuffled.slice(0, 5);
-      const second = shuffled.slice(5, 10);
-      const third = shuffled.slice(10, 15);
-      const fourth = shuffled.slice(15, 19);
-      // setFirstGroup("first");
-      // setSecondGroup(second);
-      // setThirdGroup(third);
-      // setFourthGroup(fourth);
-      // console.log(first);
-      // }
-      const splitArr = [first, second, third, fourth];
-      return splitArr;
-    }
-    if (pokedex !== null) {
-      // const pokedexCopy = Array.from(pokedex);
-      const split = shuffleSplit(pokedex);
-      setFirstGroup(split[0]);
-      console.log(firstGroup);
-    }
-    // let split1;
-    // if (pokedex !== null) {
-    //   const sets = shuffleSplit(pokedexCopy);
-    //   split1 = sets[0];
-    // }
-  }, []);
-  // console.log(firstGroup);
-  // const handleClick = (e) => {
-  // make sure card is not clicked twice
-  // resort the array
-  // when all cards are correctly clicked once change to next array
-  // split1.sort(() => 0.5 - Math.random())
-  // };
-
-  const pokeView =
-    pokedex !== null ? (
-      pokedex.map((pokemon) => (
+  const switchPokeView = (pokeSet) => {
+    return pokedex !== null ? (
+      pokeSet.map((pokemon) => (
         <li key={pokemon.id} id={pokemon.id}>
           <h3>{pokemon.name}</h3>
           <img src={pokemon.img} alt="card"></img>
@@ -125,14 +101,20 @@ const App = (props) => {
     ) : (
       <div>...Loading</div>
     );
+  };
 
   const banner = headerImg !== null ? { headerImg } : <div>Pokemon TCG</div>;
 
   return (
     <div className="App">
       <Header banner={banner} />
-      <TCGBoard pokeView={pokeView} />
-      {/* <ul>{pokeView}</ul> */}
+      <TCGBoard
+        switchPokeView={switchPokeView}
+        firstGroup={firstGroup}
+        secondGroup={secondGroup}
+        thirdGroup={thirdGroup}
+        fourthGroup={fourthGroup}
+      />
     </div>
   );
 };
