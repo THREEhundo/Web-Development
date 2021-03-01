@@ -9,15 +9,20 @@ const TCGBoard = (props) => {
     switchPokeView,
     currentScore,
     highScore,
+    shuffle,
   } = props;
 
   const showGroup =
-    firstGroup !== null ? switchPokeView(firstGroup) : <div>...Loading</div>;
+    firstGroup !== null ? (
+      switchPokeView(shuffle(firstGroup))
+    ) : (
+      <div>...Loading</div>
+    );
 
   return (
     <div>
       <h2>
-        Current Score: {currentScore} | High Score: {highScore}
+        Current Score: {currentScore.current} | High Score: {highScore.current}
       </h2>
       <ul>{showGroup}</ul>
     </div>

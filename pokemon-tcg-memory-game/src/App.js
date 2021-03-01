@@ -48,56 +48,28 @@ const App = (props) => {
   }, []);
 
   function shuffle(data) {
-    let shuffled;
-    if (data !== null) {
-      return (shuffled = data.map((x) => x));
-    }
-    shuffled = data.sort(() => 0.5 - Math.random());
-    setPokedex(shuffled);
-    const split = shuffleSplitter(shuffled);
-    setFirstGroup(split[0]);
-    setSecondGroup(split[1]);
-    setThirdGroup(split[2]);
-    setFourthGroup(split[3]);
+    return data.sort(() => 0.5 - Math.random());
   }
 
-  function shuffleSplitter(array) {
-    const first = array.slice(0, 5);
-    const second = array.slice(5, 10);
-    const third = array.slice(10, 15);
-    const fourth = array.slice(15, 20);
-
-    const splitArr = [first, second, third, fourth];
-    return splitArr;
+  function splitter(array) {
+    setFirstGroup(array.slice(0, 5));
+    setSecondGroup(array.slice(5, 10));
+    setThirdGroup(array.slice(10, 15));
+    setFourthGroup(array.slice(15, 20));
   }
 
-  // function shuffle(data) {
-  //   const shuffled = data.sort(() => 0.5 - Math.random());
-  //   setPokedex(shuffled);
-  //   const split = shuffleSplit(shuffled);
-  //   setFirstGroup(split[0]);
-  //   setSecondGroup(split[1]);
-  //   setThirdGroup(split[2]);
-  //   setFourthGroup(split[3]);
-  // }
+  // const shuffled = useCallback(() => {
+  //   pokedex.map((x) => x).sort(() => 0.5 - Math.random());
   //
-  // function shuffleSplit(array) {
-  //   const first = array.slice(0, 5);
-  //   const second = array.slice(5, 10);
-  //   const third = array.slice(10, 15);
-  //   const fourth = array.slice(15, 20);
+  //   // const shuff = copy.sort(() => 0.5 - Math.random());
+  //   // const reset = setPokedex(shuffle(copy));
+  //   // console.log("reset" + reset);
+  //   // return reset;
+  // }, [pokedex]);
   //
-  //   const splitArr = [first, second, third, fourth];
-  //   return splitArr;
-  // }
-
-  const shuffled = useCallback(() => {
-    shuffle(data);
-  }, [data]);
-
-  const shuffleSplit = useCallback(() => {
-    shuffleSplit(array);
-  }, [array]);
+  // const reSplit = useCallback(() => {
+  //   return splitter(shuffled);
+  // }, [shuffled]);
 
   useEffect(() => {
     function parseData(res) {
@@ -120,40 +92,45 @@ const App = (props) => {
         const fetched = await fetch(url);
         const res = await fetched.json();
         const parsed = parseData(res);
-        shuffled(parsed);
+        const shuffled = shuffle(parsed);
+        setPokedex(shuffled);
+        splitter(shuffled);
       } catch (error) {
         console.log("Error: ", error);
       }
     }
     fetchData();
-  }, [shuffled, shuffleSplit]);
+  }, []);
 
   const handleClick = (e) => {
     const { parentNode } = e.target;
     const { id } = parentNode;
 
-    if (selected.includes(id) && selected[selected.length - 1] !== id) {
+    if (selected.includes(id)) {
       //    //   // reset score
       currentScore.current = 0;
+      setSelected([]);
       //    //   // refresh view
+      const copiedPokedex = shuffle(pokedex.map((x) => x));
+      setPokedex(copiedPokedex);
+      splitter(copiedPokedex);
       //    //   // disallow multiple clicks on same item after if it's back to back
+    } else {
+      setSelected([...selected, id]);
+      currentScore.current = currentScore.current + 1;
+      if (highScore.current === currentScore.current - 1) {
+        highScore.current = highScore.current + 1;
+      }
+      // rearrange cards
     }
-    setSelected([...selected, id]);
-    currentScore.current = currentScore.current + 1;
-    if (currentScore === highScore) {
-      highScore.current = highScore.current + 1;
-    }
-
-    // if (currentScore > highScore) {
-    //   setHighScore(highScore + 1);
-    // }
-    console.log(currentScore);
-    console.log(highScore);
-    console.log(selected);
   };
+  // useEffect(() => {
+  //   window.addEventListener('click', handleClick)
+  //
+  //   return window.removeEventListener('click', handleClick)
+  // }, [handleClick]);
 
   const switchPokeView = (pokeSet) => {
-    console.log(pokeSet);
     return pokedex !== null ? (
       pokeSet.map((pokemon) => (
         <li key={pokemon.id} id={pokemon.id} onClick={handleClick}>
@@ -176,6 +153,9 @@ const App = (props) => {
         thirdGroup={thirdGroup}
         fourthGroup={fourthGroup}
         onClick={handleClick}
+        currentScore={currentScore}
+        highScore={highScore}
+        shuffle={shuffle}
       />
     </div>
   );
