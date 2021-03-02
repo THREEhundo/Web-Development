@@ -5,7 +5,7 @@ const Header = (props) => {
 
   const bannerLink = headerImg !== null ? headerImg : "";
 
-  const banner = <img src={bannerLink} alt="banner"></img>;
+  const banner = <img src={bannerLink} id="banner" alt="banner"></img>;
 
   return <div>{banner}</div>;
 };
