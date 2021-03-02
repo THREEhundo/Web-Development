@@ -7,13 +7,14 @@ import TCGBoard from "./components/TCGBoard";
 // grab image, name
 // create function that grabs random cards from array
 // Set banner
-
-*/
 // after 10 correct clicks -> show new set
 // show & update score
 // save new high score
 // cards cannot be repeated
-// https://api.pokemontcg.io/v2/sets?q=id:base1&images.symbol
+
+*/
+// Make pokedex size bigger
+
 const App = (props) => {
   const [headerImg, setHeaderImg] = useState(null);
   const [pokedex, setPokedex] = useState(null);
@@ -22,7 +23,6 @@ const App = (props) => {
   const [thirdGroup, setThirdGroup] = useState(null);
   const [fourthGroup, setFourthGroup] = useState(null);
   const [selected, setSelected] = useState([]);
-  const [arraysUsed, setArraysUsed] = useState([]);
   const currentScore = useRef(0);
   const highScore = useRef(0);
 
@@ -90,36 +90,61 @@ const App = (props) => {
     fetchData();
   }, []);
 
-  const handleClick = (e) => {
-    const { parentNode } = e.target;
-    const { id } = parentNode;
-
-    if (selected.includes(id)) {
-      //    //   // reset score
-      currentScore.current = 0;
-      setSelected([]);
-      //    //   // refresh view
-      const copiedPokedex = shuffle(pokedex.map((x) => x));
-      setPokedex(copiedPokedex);
-      splitter(copiedPokedex);
-      //    //   // disallow multiple clicks on same item after if it's back to back
-    } else {
-      setSelected([...selected, id]);
-      currentScore.current = currentScore.current + 1;
-      if (highScore.current === currentScore.current - 1) {
-        highScore.current = highScore.current + 1;
-      }
-    }
-  };
-
   const switchPokeView = (pokeSet) => {
     return pokeSet.map((pokemon) => (
-      <li key={pokemon.id} id={pokemon.id} onClick={handleClick}>
+      <li key={pokemon.id} id={pokemon.id} onClick={cardHandler}>
         <h3>{pokemon.name}</h3>
         <img src={pokemon.img} alt="card"></img>
       </li>
     ));
   };
+
+  const handleClick = useCallback(
+    (e) => {
+      const handleClick = (e) => {
+        const { parentNode } = e.target;
+        const { id } = parentNode;
+        console.log(e.target);
+
+        if (selected.includes(id)) {
+          // reset score
+          currentScore.current = 0;
+          setSelected([]);
+          // refresh view
+          const copiedPokedex = shuffle(pokedex.map((x) => x));
+          setPokedex(copiedPokedex);
+          splitter(copiedPokedex);
+          // disallow multiple clicks on same item after if it's back to back
+        } else {
+          setSelected([...selected, id]);
+          currentScore.current = currentScore.current + 1;
+          if (highScore.current === currentScore.current - 1) {
+            highScore.current = highScore.current + 1;
+          }
+        }
+      };
+      handleClick(e);
+    },
+    [pokedex, selected]
+  );
+
+  const cardHandler = () => {
+    const ul = document.querySelector("ul");
+    const img = document.querySelector("li > img");
+    if (ul.hasChildNodes()) {
+      for (let i = 0; i < ul.childNodes.length; i++) {
+        img.addEventListener("click", handleClick);
+      }
+
+      return () => {
+        for (let i = 0; i < ul.childNodes.length; i++) {
+          img.removeEventListener("click", handleClick);
+        }
+      };
+    }
+  };
+
+  useEffect(cardHandler, [handleClick]);
 
   return (
     <div className="App">
@@ -135,8 +160,6 @@ const App = (props) => {
         highScore={highScore}
         shuffle={shuffle}
         selected={selected}
-        arraysUsed={arraysUsed}
-        setArraysUsed={setArraysUsed}
       />
     </div>
   );
