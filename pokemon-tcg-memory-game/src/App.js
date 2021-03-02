@@ -21,9 +21,10 @@ const App = (props) => {
   const [secondGroup, setSecondGroup] = useState(null);
   const [thirdGroup, setThirdGroup] = useState(null);
   const [fourthGroup, setFourthGroup] = useState(null);
+  const [selected, setSelected] = useState([]);
+  const [arraysUsed, setArraysUsed] = useState([]);
   const currentScore = useRef(0);
   const highScore = useRef(0);
-  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     function grabHeader(data) {
@@ -57,19 +58,6 @@ const App = (props) => {
     setThirdGroup(array.slice(10, 15));
     setFourthGroup(array.slice(15, 20));
   }
-
-  // const shuffled = useCallback(() => {
-  //   pokedex.map((x) => x).sort(() => 0.5 - Math.random());
-  //
-  //   // const shuff = copy.sort(() => 0.5 - Math.random());
-  //   // const reset = setPokedex(shuffle(copy));
-  //   // console.log("reset" + reset);
-  //   // return reset;
-  // }, [pokedex]);
-  //
-  // const reSplit = useCallback(() => {
-  //   return splitter(shuffled);
-  // }, [shuffled]);
 
   useEffect(() => {
     function parseData(res) {
@@ -121,26 +109,16 @@ const App = (props) => {
       if (highScore.current === currentScore.current - 1) {
         highScore.current = highScore.current + 1;
       }
-      // rearrange cards
     }
   };
-  // useEffect(() => {
-  //   window.addEventListener('click', handleClick)
-  //
-  //   return window.removeEventListener('click', handleClick)
-  // }, [handleClick]);
 
   const switchPokeView = (pokeSet) => {
-    return pokedex !== null ? (
-      pokeSet.map((pokemon) => (
-        <li key={pokemon.id} id={pokemon.id} onClick={handleClick}>
-          <h3>{pokemon.name}</h3>
-          <img src={pokemon.img} alt="card"></img>
-        </li>
-      ))
-    ) : (
-      <div>...Loading</div>
-    );
+    return pokeSet.map((pokemon) => (
+      <li key={pokemon.id} id={pokemon.id} onClick={handleClick}>
+        <h3>{pokemon.name}</h3>
+        <img src={pokemon.img} alt="card"></img>
+      </li>
+    ));
   };
 
   return (
@@ -156,6 +134,9 @@ const App = (props) => {
         currentScore={currentScore}
         highScore={highScore}
         shuffle={shuffle}
+        selected={selected}
+        arraysUsed={arraysUsed}
+        setArraysUsed={setArraysUsed}
       />
     </div>
   );
