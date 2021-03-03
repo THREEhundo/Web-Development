@@ -22,6 +22,12 @@ const App = (props) => {
   const [secondGroup, setSecondGroup] = useState(null);
   const [thirdGroup, setThirdGroup] = useState(null);
   const [fourthGroup, setFourthGroup] = useState(null);
+  const [fifthGroup, setFifthGroup] = useState(null);
+  const [sixthGroup, setSixthGroup] = useState(null);
+  const [seventhGroup, setSeventhGroup] = useState(null);
+  const [eighthGroup, setEightGroup] = useState(null);
+  const [ninthGroup, setNinthGroup] = useState(null);
+  const [tenthGroup, setTenthGroup] = useState(null);
   const [selected, setSelected] = useState([]);
   const currentScore = useRef(0);
   const highScore = useRef(0);
@@ -53,10 +59,30 @@ const App = (props) => {
   }
 
   function splitter(array) {
-    setFirstGroup(array.slice(0, 5));
-    setSecondGroup(array.slice(5, 10));
-    setThirdGroup(array.slice(10, 15));
-    setFourthGroup(array.slice(15, 20));
+    setFirstGroup(array.slice(0, 10));
+    setSecondGroup(array.slice(10, 20));
+    setThirdGroup(array.slice(20, 30));
+    setFourthGroup(array.slice(30, 40));
+  }
+
+  function splitData(array) {
+    let groups = [
+      setFirstGroup,
+      setSecondGroup,
+      setThirdGroup,
+      setFourthGroup,
+      setFifthGroup,
+      setSixthGroup,
+      setSeventhGroup,
+      setEightGroup,
+      setNinthGroup,
+      setTenthGroup,
+    ];
+
+    for (let i = 0; i < groups.length; i++) {
+      groups[i](array.slice(0, 10));
+    }
+    return groups;
   }
 
   useEffect(() => {
@@ -70,9 +96,9 @@ const App = (props) => {
         if (!result) return res.concat(itm);
         return res;
       }, []);
-      console.log(unique);
+      const allUnique = unique.splice(0, 100);
 
-      return unique.map((pokemon) => {
+      return allUnique.map((pokemon) => {
         return {
           id: pokemon.id,
           name: pokemon.name,
@@ -84,7 +110,7 @@ const App = (props) => {
     async function fetchData() {
       try {
         const url =
-          "https://api.pokemontcg.io/v2/cards?q=set.series:base&nationalPokedexNumbers:[1%20TO%20151]&pageSize=20";
+          "https://api.pokemontcg.io/v2/cards?q=set.series:base&nationalPokedexNumbers:[1%20TO%20151]&pageSize=250";
 
         const fetched = await fetch(url);
         const res = await fetched.json();
@@ -92,6 +118,7 @@ const App = (props) => {
         const shuffled = shuffle(parsed);
         setPokedex(shuffled);
         splitter(shuffled);
+        splitData(shuffled);
       } catch (error) {
         console.log("Error: ", error);
       }
