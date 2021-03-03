@@ -63,7 +63,16 @@ const App = (props) => {
     function parseData(res) {
       const { data } = res;
 
-      return data.map((pokemon) => {
+      let unique = data.reduce((res, itm) => {
+        let result = res.find(
+          (item) => JSON.stringify(item.name) === JSON.stringify(itm.name)
+        );
+        if (!result) return res.concat(itm);
+        return res;
+      }, []);
+      console.log(unique);
+
+      return unique.map((pokemon) => {
         return {
           id: pokemon.id,
           name: pokemon.name,
