@@ -1,4 +1,11 @@
+@font-face {
+  font-family: "pokemon";
+  src: url(pokmon/Pokemon.ttf);
+  font-style: normal;
+}
+
 * {
+  font-family: pokemon;
   margin: 0;
   padding: 0;
   border: 0;
@@ -10,7 +17,11 @@ ul,
   flex-flow: wrap;
   justify-content: center;
   align-items: center;
+}
+
+ul {
   width: 100vw;
+  min-width: 860px;
 }
 
 li {
@@ -20,8 +31,48 @@ li {
 
 .App {
   text-align: center;
+  min-width: 860px;
 }
 
 #banner {
-  flex-shrink: 3;
+  margin: auto;
+  width: 100%;
+  max-width: 884px;
+  height: auto;
+}
+
+#scoreBoard {
+  margin: 15px auto;
+  -webkit-text-fill-color: #ffcb05;
+  -webkit-text-stroke-width: 8px;
+  -webkit-text-stroke-color: #3466af;
+  font-size: 6rem;
+  letter-spacing: 1rem;
+}
+
+#scoreBoard > img {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#scoreBoard > #currentScore,
+#highScore {
+  display: flex;
+  flex-flow: nowrap;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  min-width: auto;
+}
+
+#currentImg {
+  /* max-width: 600px;
+  max-height: 109px; */
+  width: 651px;
+  height: 109px;
+}
+
+#highImg {
+  width: 471px;
+  height: 145px;
 }

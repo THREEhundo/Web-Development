@@ -32,9 +32,25 @@ const TCGBoard = (props) => {
 
   return (
     <div>
-      <h2>
-        Current Score: {currentScore.current} | High Score: {highScore.current}
-      </h2>
+      <div id="scoreBoard">
+        <div id="currentScore">
+          <img
+            src="https://fontmeme.com/permalink/210302/85e7558e3bc0b2b9b081d06952401a81.png"
+            id="currentImg"
+            alt="currentScore"
+          />
+          : {currentScore.current}
+        </div>
+        <div id="highScore">
+          <img
+            src="https://fontmeme.com/permalink/210302/34a426d0ccc503a37ea413d14d8ddb10.png"
+            id="highImg"
+            alt="highScore"
+          />
+          : {highScore.current}
+        </div>
+      </div>
+
       <ul>{switchDecks}</ul>
     </div>
   );

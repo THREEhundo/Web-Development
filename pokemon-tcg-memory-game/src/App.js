@@ -90,21 +90,11 @@ const App = (props) => {
     fetchData();
   }, []);
 
-  const switchPokeView = (pokeSet) => {
-    return pokeSet.map((pokemon) => (
-      <li key={pokemon.id} id={pokemon.id} onClick={cardHandler}>
-        <h3>{pokemon.name}</h3>
-        <img src={pokemon.img} alt="card"></img>
-      </li>
-    ));
-  };
-
   const handleClick = useCallback(
     (e) => {
       const handleClick = (e) => {
         const { parentNode } = e.target;
         const { id } = parentNode;
-        console.log(e.target);
 
         if (selected.includes(id)) {
           // reset score
@@ -128,23 +118,13 @@ const App = (props) => {
     [pokedex, selected]
   );
 
-  const cardHandler = () => {
-    const ul = document.querySelector("ul");
-    const img = document.querySelector("li > img");
-    if (ul.hasChildNodes()) {
-      for (let i = 0; i < ul.childNodes.length; i++) {
-        img.addEventListener("click", handleClick);
-      }
-
-      return () => {
-        for (let i = 0; i < ul.childNodes.length; i++) {
-          img.removeEventListener("click", handleClick);
-        }
-      };
-    }
+  const switchPokeView = (pokeSet) => {
+    return pokeSet.map((pokemon) => (
+      <li key={pokemon.id} id={pokemon.id} onClick={handleClick}>
+        <img src={pokemon.img} alt="card"></img>
+      </li>
+    ));
   };
-
-  useEffect(cardHandler, [handleClick]);
 
   return (
     <div className="App">
