@@ -80,7 +80,7 @@ const App = (props) => {
     ];
 
     for (let i = 0; i < groups.length; i++) {
-      groups[i](array.slice(0, 10));
+      groups[i](array.splice(0, 10));
     }
     return groups;
   }
@@ -117,7 +117,6 @@ const App = (props) => {
         const parsed = parseData(res);
         const shuffled = shuffle(parsed);
         setPokedex(shuffled);
-        splitter(shuffled);
         splitData(shuffled);
       } catch (error) {
         console.log("Error: ", error);
@@ -171,6 +170,12 @@ const App = (props) => {
         secondGroup={secondGroup}
         thirdGroup={thirdGroup}
         fourthGroup={fourthGroup}
+        fifthGroup={fifthGroup}
+        sixthGroup={sixthGroup}
+        seventhGroup={seventhGroup}
+        eighthGroup={eighthGroup}
+        ninthGroup={ninthGroup}
+        tenthGroup={tenthGroup}
         onClick={handleClick}
         currentScore={currentScore}
         highScore={highScore}

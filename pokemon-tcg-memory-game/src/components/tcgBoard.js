@@ -6,6 +6,12 @@ const TCGBoard = (props) => {
     secondGroup,
     thirdGroup,
     fourthGroup,
+    fifthGroup,
+    sixthGroup,
+    seventhGroup,
+    eighthGroup,
+    ninthGroup,
+    tenthGroup,
     switchPokeView,
     currentScore,
     highScore,
@@ -13,15 +19,29 @@ const TCGBoard = (props) => {
   } = props;
 
   function newDeck() {
-    if (firstGroup !== null && currentScore.current <= 4) {
+    if (firstGroup !== null && currentScore.current <= 9) {
       return switchPokeView(shuffle(firstGroup.map((x) => x)));
-    } else if (firstGroup !== null && currentScore.current <= 9) {
+    } else if (firstGroup !== null && currentScore.current <= 19) {
       return switchPokeView(shuffle(secondGroup.map((x) => x)));
-    } else if (secondGroup !== null && currentScore.current <= 14) {
+    } else if (secondGroup !== null && currentScore.current <= 29) {
       return switchPokeView(shuffle(thirdGroup.map((x) => x)));
-    } else if (thirdGroup !== null && currentScore.current <= 19) {
+    } else if (thirdGroup !== null && currentScore.current <= 39) {
       return switchPokeView(shuffle(fourthGroup.map((x) => x)));
-    } else if (fourthGroup !== null && currentScore.current === 20) {
+    } else if (fourthGroup !== null && currentScore.current <= 49) {
+      return switchPokeView(shuffle(fourthGroup.map((x) => x)));
+    } else if (fifthGroup !== null && currentScore.current <= 59) {
+      return switchPokeView(shuffle(fifthGroup.map((x) => x)));
+    } else if (sixthGroup !== null && currentScore.current <= 59) {
+      return switchPokeView(shuffle(sixthGroup.map((x) => x)));
+    } else if (seventhGroup !== null && currentScore.current <= 69) {
+      return switchPokeView(shuffle(seventhGroup.map((x) => x)));
+    } else if (eighthGroup !== null && currentScore.current <= 79) {
+      return switchPokeView(shuffle(eighthGroup.map((x) => x)));
+    } else if (ninthGroup !== null && currentScore.current <= 89) {
+      return switchPokeView(shuffle(ninthGroup.map((x) => x)));
+    } else if (tenthGroup !== null && currentScore.current <= 99) {
+      return switchPokeView(shuffle(tenthGroup.map((x) => x)));
+    } else if (currentScore.current === 100) {
       return <div>You Win!</div>;
     } else {
       return <div>...Loading</div>;
