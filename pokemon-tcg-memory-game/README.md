@@ -15,7 +15,7 @@ ReactJS
 
 -Switching from using thenables to try catch.
 <br />
--Ordering the implementaion of states.
+-Ordering the implementation of states.
 <br />
 -Understanding that useEffects ran from top to bottom.
 <br />
