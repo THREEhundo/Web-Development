@@ -14,7 +14,11 @@ ReactJS
 ## Pain Spots
 
 -Switching from using thenables to try catch.
+<br />
 -Ordering the implementaion of states.
+<br />
 -Understanding that useEffects ran from top to bottom.
+<br />
 -Used multiple useEffects for connected states which created an endless loop. Combined into the useEffect that had the data fetched.
+<br />
 -Changed currentScore and highScore from useStates to useRefs.
