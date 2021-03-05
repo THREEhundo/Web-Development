@@ -3,18 +3,6 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Header from "./components/Header";
 import TCGBoard from "./components/TCGBoard";
 
-/*
-// grab image, name
-// create function that grabs random cards from array
-// Set banner
-// after 10 correct clicks -> show new set
-// show & update score
-// save new high score
-// cards cannot be repeated
-
-*/
-// Make pokedex size bigger
-
 const App = (props) => {
   const [headerImg, setHeaderImg] = useState(null);
   const [pokedex, setPokedex] = useState(null);
@@ -56,13 +44,6 @@ const App = (props) => {
 
   function shuffle(data) {
     return data.sort(() => 0.5 - Math.random());
-  }
-
-  function splitter(array) {
-    setFirstGroup(array.slice(0, 10));
-    setSecondGroup(array.slice(10, 20));
-    setThirdGroup(array.slice(20, 30));
-    setFourthGroup(array.slice(30, 40));
   }
 
   function splitData(array) {
@@ -135,12 +116,13 @@ const App = (props) => {
           // reset score
           currentScore.current = 0;
           setSelected([]);
+
           // refresh view
           const copiedPokedex = shuffle(pokedex.map((x) => x));
           setPokedex(copiedPokedex);
-          splitter(copiedPokedex);
-          // disallow multiple clicks on same item after if it's back to back
+          splitData(copiedPokedex);
         } else {
+          // add to both counters
           setSelected([...selected, id]);
           currentScore.current = currentScore.current + 1;
           if (highScore.current === currentScore.current - 1) {

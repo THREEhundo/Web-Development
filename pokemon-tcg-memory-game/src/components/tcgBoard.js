@@ -70,7 +70,10 @@ const TCGBoard = (props) => {
           : {highScore.current}
         </div>
       </div>
-
+      <div id="info">
+        <p>Get points by clicking on an image. Not more than once!</p>
+        <p>There are 10 rounds to beat!</p>
+      </div>
       <ul>{switchDecks}</ul>
     </div>
   );
