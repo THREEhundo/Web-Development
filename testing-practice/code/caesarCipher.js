@@ -56,10 +56,23 @@ const upperAlphabet = [
   "Z",
 ];
 
+const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
 const encrypt = (msg) => {
+  const nonLetters = /[^A-Za-z0-9]/;
+  const num = /[0-9]/;
   let code = "";
+
   for (var i = 0; i < msg.length; i++) {
-    if (msg[i] === msg[i].toLowerCase()) {
+    if (nonLetters.test(msg[i])) {
+      code += msg[i];
+    } else if (num.test(msg[i])) {
+      for (var l = 0; l < numbers.length; l++) {
+        if (msg[i] === numbers[l]) {
+          l + 1 > 9 ? (code += numbers[l + 1 - 10]) : (code += numbers[l + 1]);
+        }
+      }
+    } else if (msg[i] === msg[i].toLowerCase()) {
       for (var j = 0; j < lowerAlphabet.length; j++) {
         if (msg[i] === lowerAlphabet[j]) {
           j + 1 > 25
@@ -79,6 +92,10 @@ const encrypt = (msg) => {
   }
 
   return code;
+};
+
+const decrypt = (msg) => {
+  let decrypted = "";
 };
 
 const caesar = {
